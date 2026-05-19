@@ -19,7 +19,8 @@ python3 -m http.server 8000   # → http://localhost:8000
 - **Busca global** com atalho `⌘K` / `Ctrl K` e navegação por teclado
 - **Tema claro/escuro** persistido em `localStorage`
 - **Calendário de agendamento** com seleção de data/horário → mensagem formatada pro WhatsApp
-- **Sistema de auth mock** (cadastro/login via `localStorage`) com gate na página de agendar
+- **Sistema de auth mock** (cadastro/login via `localStorage`), opcional —
+  agendar não exige login
 - **Galeria** com filtros por categoria e lightbox navegável por teclado
 - **SEO:** meta tags, Open Graph, Schema.org JSON-LD, `sitemap.xml`, `robots.txt`
 - **Acessibilidade:** foco visível por teclado (`:focus-visible`) e respeito a
@@ -43,9 +44,10 @@ site/
 
 Este é um **protótipo acadêmico**, não um produto de produção:
 
-- A autenticação é **simulada** via `localStorage` e **não oferece segurança real**.
-  O "auth gate" da página de agendar pode ser contornado pelo console — ele
-  demonstra o *fluxo* de autenticação, não protege dados.
+- A autenticação é **simulada** via `localStorage` e **não oferece segurança real**
+  (qualquer dado pode ser editado pelo console). Ela serve só para demonstrar o
+  *fluxo* de cadastro/login — **não é exigida para agendar**: o calendário e os
+  horários ficam livremente acessíveis, e os dados são pedidos apenas no envio.
 - Os horários disponíveis no calendário são **gerados deterministicamente** (não
   refletem uma agenda real).
 - Fotos, depoimentos, posts de blog e dados de contato (telefone, e-mail,

@@ -130,7 +130,9 @@
 - Medidor de força de senha (4 barras, label em tempo real)
 - Social login placeholder (Google, Apple)
 - Toast notifications
-- **Auth gate em `/agendar.html`** — redireciona pra login com `?next=`
+- ~~**Auth gate em `/agendar.html`**~~ — **removido (v11):** agendar não exige
+  mais login; calendário e horários são livremente acessíveis. Dados pedidos só
+  no envio, e salvos localmente para pré-preencher a próxima visita
 - Pré-preenchimento do form com dados do usuário
 - Welcome chip "// olá, *João*" no topo do agendar
 - **Avatar + dropdown no nav** quando logado (com logout)
@@ -198,7 +200,8 @@ site/
 
 ### Por que `localStorage` pra auth?
 - Mock simples — protótipo, não produção
-- Mostra o conceito de auth gate sem precisar de backend
+- Demonstra o fluxo de cadastro/login sem precisar de backend
+- Usado também como cache de conveniência (pré-preenche o form de agendar)
 - Em produção: trocar por JWT + backend real
 
 ### Sistema de motion
@@ -240,19 +243,20 @@ site/
        ↓
    [clica em "agendar"]
        ↓
-   [não está logado] → login.html?next=agendar.html
-       ↓
-   [faz cadastro/login] → toast "bem-vindo" → redirect agendar.html
-       ↓
-   [vê welcome chip + form pré-preenchido]
+   [acessa direto — sem login] → vê o calendário
        ↓
    [escolhe serviço + barbeiro + clica numa data no calendário]
        ↓
    [horários disponíveis aparecem → seleciona um]
        ↓
+   [preenche nome + WhatsApp no form]   ← dados pedidos só aqui
+       ↓
    [clica "enviar para whatsapp"]
        ↓
-   [abre WhatsApp com mensagem formatada]
+   [dados salvos localmente p/ próxima visita] → abre WhatsApp com msg formatada
+
+   (visitante recorrente: form já vem pré-preenchido + welcome chip.
+    login/cadastro continua existindo, mas é opcional)
 ```
 
 ---
@@ -326,6 +330,10 @@ site/
 8. **Sistema de login/cadastro + auth gate**
 9. **Calendário visual + página 404 + sitemap**
 10. **Robustez do light mode** (fix de cores hardcoded)
+11. **Auditoria de segurança/qualidade:** correção de XSS no dropdown de conta
+    (textContent), acessibilidade (`:focus-visible` + `prefers-reduced-motion`),
+    Schema.org válido, README/LICENSE/.gitignore, e **remoção do auth gate** —
+    agendar deixou de exigir login (redução de fricção de conversão)
 
 A cada etapa, escolhas foram feitas pra equilibrar **fidelidade ao briefing** e **personalidade própria** — sem cair em clichês de "site de barbearia escuro com dourado", optando por um tom mais jovem (azul elétrico + mono code-style).
 
