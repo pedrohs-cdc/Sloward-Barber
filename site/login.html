@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Acesso — Sloward Barbershop</title>
+<meta name="description" content="Entre na sua conta ou crie um cadastro para gerenciar seus agendamentos na Sloward Barbershop.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Acesso — Sloward Barbershop">
+<meta property="og:description" content="Login e cadastro de clientes Sloward.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
+<style>
+  /* ─── Page layout ─── */
+  .auth-page {
+    min-height: 100vh;
+    padding-top: var(--nav-h);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (max-width: 920px) {
+    .auth-page { grid-template-columns: 1fr; }
+    .auth-aside { display: none; }
+  }
+
+  /* ─── Aside (left side, brand panel) ─── */
+  .auth-aside {
+    position: relative;
+    padding: 80px 64px;
+    background: linear-gradient(180deg, var(--bg-2), var(--accent-bg));
+    border-right: 1px solid var(--stroke-hot);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .auth-aside::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--stroke) 1px, transparent 1px),
+      linear-gradient(90deg, var(--stroke) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.4;
+    mask-image: radial-gradient(ellipse at 30% 30%, #000 30%, transparent 80%);
+  }
+  .auth-aside::after {
+    content: "";
+    position: absolute;
+    width: 700px; height: 700px;
+    bottom: -300px; right: -200px;
+    background: radial-gradient(circle, rgba(37,99,235,0.25), transparent 60%);
+    pointer-events: none;
+    filter: blur(40px);
+  }
+  .auth-aside > * { position: relative; z-index: 2; }
+
+  .auth-monogram {
+    width: 80px; height: 80px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 40px rgba(37,99,235,0.45);
+    margin-bottom: 48px;
+  }
+  .auth-monogram svg { color: #fff; }
+
+  .auth-aside h2 {
+    font-family: var(--display);
+    font-size: clamp(40px, 4vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    margin: 0 0 24px;
+  }
+  .auth-aside h2 .accent {
+    background: linear-gradient(135deg, var(--blue-bright) 0%, var(--blue-glow) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+  .auth-aside p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 420px;
+    margin: 0 0 36px;
+  }
+  .auth-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 32px;
+  }
+  .auth-feature {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: rgba(59,130,246,0.06);
+    border: 1px solid var(--stroke-soft);
+    border-radius: 12px;
+    transition: all 240ms var(--ease-out);
+  }
+  .auth-feature:hover {
+    border-color: var(--stroke-hot);
+    transform: translateX(4px);
+  }
+  .auth-feature__icon {
+    width: 36px; height: 36px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue-bright);
+    flex-shrink: 0;
+  }
+  .auth-feature__text {
+    font-family: var(--display);
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .auth-feature__text strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ─── Form side ─── */
+  .auth-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 32px;
+    position: relative;
+  }
+  .auth-card {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--bg-2);
+    border: 1px solid var(--stroke-soft);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .auth-tab {
+    padding: 14px 20px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--ink-mute);
+    border-radius: 8px;
+    transition: color 240ms ease;
+    position: relative;
+    z-index: 2;
+  }
+  .auth-tab.active { color: #fff; }
+  .auth-tab-indicator {
+    position: absolute;
+    top: 4px; bottom: 4px;
+    width: calc(50% - 4px);
+    background: var(--blue);
+    border-radius: 8px;
+    transition: transform 320ms var(--ease-out);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.3);
+    z-index: 1;
+  }
+  .auth-tabs[data-mode="signup"] .auth-tab-indicator { transform: translateX(100%); }
+
+  .auth-form { display: none; flex-direction: column; gap: 18px; }
+  .auth-form.active { display: flex; animation: formFade 360ms var(--ease-out); }
+  @keyframes formFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .auth-header { margin-bottom: 8px; }
+  .auth-header h1 {
+    font-family: var(--display);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0 0 8px;
+    line-height: 1.05;
+  }
+  .auth-header p {
+    font-size: 15px;
+    color: var(--ink-mute);
+    margin: 0;
+  }
+
+  /* Field with icon + show/hide */
+  .field-icon {
+    position: relative;
+  }
+  .field-icon input {
+    padding-left: 48px;
+  }
+  .field-icon .field-svg {
+    position: absolute;
+    left: 18px; top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    color: var(--blue-bright);
+    pointer-events: none;
+  }
+  .field-icon .toggle-pass {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--ink-mute);
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 200ms ease;
+  }
+  .field-icon .toggle-pass:hover { color: var(--blue-bright); background: rgba(59,130,246,0.08); }
+  .field-icon .toggle-pass svg { width: 18px; height: 18px; display: block; }
+
+  /* Password strength */
+  .pw-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    height: 4px;
+  }
+  .pw-strength span {
+    flex: 1;
+    background: rgba(59,130,246,0.1);
+    border-radius: 2px;
+    transition: background 240ms ease;
+  }
+  .pw-strength.s1 span:nth-child(-n+1) { background: #ef4444; }
+  .pw-strength.s2 span:nth-child(-n+2) { background: #f59e0b; }
+  .pw-strength.s3 span:nth-child(-n+3) { background: #3B82F6; }
+  .pw-strength.s4 span:nth-child(-n+4) { background: #10b981; }
+  .pw-hint {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+
+  /* Options row */
+  .auth-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 4px;
+  }
+  .auth-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .auth-options input[type=checkbox] {
+    accent-color: var(--blue-bright);
+    width: 16px; height: 16px;
+  }
+  .auth-options a {
+    color: var(--blue-bright);
+    transition: color 200ms ease;
+  }
+  .auth-options a:hover { color: var(--blue-glow); }
+
+  /* Submit */
+  .auth-submit {
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 18px 24px;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(37,99,235,0.35);
+    transition: all 240ms var(--ease-out);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .auth-submit:hover {
+    background: var(--blue-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37,99,235,0.5);
+  }
+  .auth-submit .arrow { transition: transform 220ms var(--ease-out); }
+  .auth-submit:hover .arrow { transform: translateX(4px); }
+
+  /* Divider */
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 8px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--stroke-soft);
+  }
+
+  /* Social buttons */
+  .social-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .social-btn {
+    background: var(--bg-2);
+    border: 1px solid var(--stroke-soft);
+    color: var(--ink);
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 240ms var(--ease-out);
+  }
+  .social-btn:hover {
+    border-color: var(--stroke-hot);
+    background: rgba(59,130,246,0.08);
+    transform: translateY(-2px);
+  }
+  .social-btn svg { width: 18px; height: 18px; }
+
+  /* Switch link */
+  .auth-switch {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-top: 12px;
+  }
+  .auth-switch a {
+    color: var(--blue-bright);
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 200ms ease;
+  }
+  .auth-switch a:hover { color: var(--blue-glow); text-decoration: underline; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-2);
+    border: 1px solid var(--stroke-hot);
+    border-radius: 12px;
+    padding: 16px 24px;
+    font-family: var(--display);
+    font-size: 15px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 320ms var(--ease-out);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast .ok {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #10b981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .toast .ok svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav__brand"><span class="dot"></span>SLOWARD</a>
+    <div class="nav__menu">
+      <a href="index.html">inicio</a>
+      <a href="servicos.html">servicos</a>
+      <a href="equipe.html">equipe</a>
+      <a href="galeria.html">galeria</a>
+      <a href="localizacao.html">local</a>
+      <a href="blog.html">blog</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <button class="search-trigger" data-search-open aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>buscar serviços...</span>
+        <span class="kbd"><span>⌘</span><span>K</span></span>
+      </button>
+      <button class="icon-btn" data-theme-toggle aria-label="Alternar tema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="agendar.html" class="nav__cta">agendar <span class="arrow">→</span></a>
+      <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav__mobile">
+    <a href="index.html">inicio</a>
+    <a href="servicos.html">servicos</a>
+    <a href="equipe.html">equipe</a>
+    <a href="galeria.html">galeria</a>
+    <a href="localizacao.html">local</a>
+    <a href="blog.html">blog</a>
+    <a href="agendar.html">agendar →</a>
+  </div>
+</nav>
+
+<main class="auth-page">
+
+  <!-- ─── ASIDE BRAND ─── -->
+  <aside class="auth-aside">
+    <div>
+      <div class="auth-monogram">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="38" r="4"/>
+          <circle cx="38" cy="38" r="4"/>
+          <path d="M13 35L38 10 M35 35L10 10"/>
+        </svg>
+      </div>
+
+      <div class="chip" style="margin-bottom: 28px;"><span class="dot"></span>// área do cliente</div>
+      <h2>seu espaço<br/><span class="accent">na Sloward.</span></h2>
+      <p>
+        Crie sua conta pra agendar mais rápido, salvar suas preferências e acompanhar seu histórico de cortes.
+      </p>
+    </div>
+
+    <div class="auth-features">
+      <div class="auth-feature">
+        <div class="auth-feature__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="auth-feature__text"><strong>Agendamentos rápidos</strong> com 1 clique</div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="auth-feature__text"><strong>Histórico</strong> de visitas e serviços</div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="auth-feature__text"><strong>Pontos de fidelidade</strong> · 10º corte grátis</div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </div>
+        <div class="auth-feature__text"><strong>Cupons exclusivos</strong> só pra clientes</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── FORM ─── -->
+  <section class="auth-main">
+    <div class="auth-card">
+
+      <!-- Tabs -->
+      <div class="auth-tabs" data-mode="login">
+        <button class="auth-tab active" data-tab="login">entrar</button>
+        <button class="auth-tab" data-tab="signup">criar conta</button>
+        <div class="auth-tab-indicator"></div>
+      </div>
+
+      <!-- LOGIN form -->
+      <form class="auth-form active" id="loginForm" onsubmit="return doLogin(event)">
+        <div class="auth-header">
+          <h1>bem-vindo de <span style="color:var(--blue-bright);">volta.</span></h1>
+          <p>entre pra continuar gerenciando seus agendamentos.</p>
+        </div>
+
+        <div class="field field-icon">
+          <label for="login-email">email</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input type="email" id="login-email" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+
+        <div class="field field-icon">
+          <label for="login-pass">senha</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="login-pass" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="toggle-pass" aria-label="Mostrar senha" data-toggle-pass="login-pass">
+            <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+
+        <div class="auth-options">
+          <label><input type="checkbox" checked> manter conectado</label>
+          <a href="#" onclick="event.preventDefault(); toast('link de recuperação enviado pro seu email');">esqueceu a senha?</a>
+        </div>
+
+        <button type="submit" class="auth-submit">entrar <span class="arrow">→</span></button>
+
+        <div class="auth-divider">ou continuar com</div>
+
+        <div class="social-btns">
+          <button type="button" class="social-btn" onclick="toast('login com Google em breve');">
+            <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5.04c1.62 0 3.07.56 4.22 1.65l3.15-3.15C17.45 1.7 14.97.6 12 .6 7.7.6 3.99 3.07 2.18 6.71l3.66 2.84C6.71 6.94 9.14 5.04 12 5.04z"/><path fill="#4285F4" d="M23.4 12.27c0-.82-.07-1.61-.21-2.36H12v4.46h6.4c-.28 1.49-1.13 2.75-2.4 3.6l3.68 2.85c2.15-1.98 3.4-4.91 3.4-8.55z"/><path fill="#FBBC05" d="M5.84 14.45c-.22-.65-.34-1.34-.34-2.05s.12-1.4.34-2.05L2.18 7.51A11.96 11.96 0 0 0 .6 12.4c0 1.93.46 3.76 1.58 5.39l3.66-2.84z"/><path fill="#34A853" d="M12 23.4c3.24 0 5.96-1.07 7.94-2.91l-3.68-2.85c-1.02.69-2.33 1.1-4.26 1.1-2.86 0-5.29-1.9-6.16-4.51L2.18 17.1C3.99 20.93 7.7 23.4 12 23.4z"/></svg>
+            Google
+          </button>
+          <button type="button" class="social-btn" onclick="toast('login com Apple em breve');">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            Apple
+          </button>
+        </div>
+
+        <div class="auth-switch">
+          ainda não tem conta? <a data-switch="signup">criar conta</a>
+        </div>
+      </form>
+
+      <!-- SIGNUP form -->
+      <form class="auth-form" id="signupForm" onsubmit="return doSignup(event)">
+        <div class="auth-header">
+          <h1>seja <span style="color:var(--blue-bright);">cliente.</span></h1>
+          <p>leva menos de 30 segundos pra criar sua conta.</p>
+        </div>
+
+        <div class="field field-icon">
+          <label for="su-name">nome completo</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="su-name" placeholder="João Silva" required autocomplete="name">
+        </div>
+
+        <div class="field field-icon">
+          <label for="su-email">email</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input type="email" id="su-email" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+
+        <div class="field field-icon">
+          <label for="su-phone">whatsapp</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.33 1.91.62 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.29 1.85.5 2.81.62a2 2 0 0 1 1.72 2z"/></svg>
+          <input type="tel" id="su-phone" placeholder="(00) 00000-0000" required autocomplete="tel">
+        </div>
+
+        <div class="field field-icon">
+          <label for="su-pass">senha</label>
+          <svg class="field-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="su-pass" placeholder="mínimo 8 caracteres" required autocomplete="new-password" minlength="8">
+          <button type="button" class="toggle-pass" aria-label="Mostrar senha" data-toggle-pass="su-pass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <div class="pw-strength" id="pw-bars"><span></span><span></span><span></span><span></span></div>
+          <div class="pw-hint" id="pw-hint">// use letras, números e símbolos pra uma senha forte</div>
+        </div>
+
+        <div class="auth-options" style="margin-top:8px;">
+          <label><input type="checkbox" required> aceito os <a href="#" onclick="event.preventDefault();">termos</a> e a <a href="#" onclick="event.preventDefault();">privacidade</a></label>
+        </div>
+
+        <button type="submit" class="auth-submit">criar conta <span class="arrow">→</span></button>
+
+        <div class="auth-switch">
+          já tem conta? <a data-switch="login">entrar</a>
+        </div>
+      </form>
+
+    </div>
+  </section>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="toast-msg">tudo certo!</div>
+</div>
+
+<!-- ─── SEARCH DIALOG ─── -->
+<div class="search-backdrop" role="dialog" aria-modal="true" aria-label="Busca">
+  <div class="search-dialog">
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="buscar serviços, equipe, páginas..." autocomplete="off" />
+      <span class="esc" data-search-close>ESC</span>
+    </div>
+    <div class="search-results"></div>
+  </div>
+</div>
+
+<a href="https://wa.me/5516920000060" class="fab-whats" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z"/></svg>
+</a>
+
+<button class="fab-top" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="assets/motion.js"></script>
+<script>
+  // Tab switching
+  const tabs = document.querySelector('.auth-tabs');
+  const tabBtns = document.querySelectorAll('.auth-tab');
+  const forms = {
+    login: document.getElementById('loginForm'),
+    signup: document.getElementById('signupForm'),
+  };
+
+  function switchTo(mode) {
+    tabs.dataset.mode = mode;
+    tabBtns.forEach((b) => b.classList.toggle('active', b.dataset.tab === mode));
+    Object.entries(forms).forEach(([k, f]) => f.classList.toggle('active', k === mode));
+    // also reflect in URL hash so refresh keeps state
+    history.replaceState(null, '', '#' + mode);
+  }
+  tabBtns.forEach((b) => b.addEventListener('click', () => switchTo(b.dataset.tab)));
+  document.querySelectorAll('[data-switch]').forEach((a) =>
+    a.addEventListener('click', (e) => { e.preventDefault(); switchTo(a.dataset.switch); })
+  );
+  // On load: respect hash
+  if (location.hash === '#signup') switchTo('signup');
+
+  // Show/hide password
+  document.querySelectorAll('[data-toggle-pass]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.togglePass);
+      const isPw = target.type === 'password';
+      target.type = isPw ? 'text' : 'password';
+      btn.innerHTML = isPw
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    });
+  });
+
+  // Password strength
+  const pw = document.getElementById('su-pass');
+  const bars = document.getElementById('pw-bars');
+  const hint = document.getElementById('pw-hint');
+  pw?.addEventListener('input', () => {
+    const v = pw.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    bars.className = 'pw-strength s' + score;
+    const labels = ['', 'fraca', 'média', 'boa', 'forte'];
+    hint.textContent = v ? '// senha ' + labels[score] : '// use letras, números e símbolos pra uma senha forte';
+  });
+
+  // Toast
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.querySelector('.toast-msg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  // Submit handlers (mock + persist auth)
+  function setAuth(user) {
+    try {
+      localStorage.setItem('sloward-auth', JSON.stringify({
+        name: user.name || 'Cliente',
+        email: user.email || '',
+        loggedAt: Date.now()
+      }));
+    } catch (e) {}
+  }
+  function redirectAfterAuth() {
+    const params = new URLSearchParams(location.search);
+    const next = params.get('next');
+    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
+    setTimeout(() => { window.location.href = safe; }, 1400);
+  }
+  function doLogin(e) {
+    e.preventDefault();
+    setAuth({ name: e.target['login-email'].value.split('@')[0], email: e.target['login-email'].value });
+    toast('login realizado! redirecionando...');
+    redirectAfterAuth();
+    return false;
+  }
+  function doSignup(e) {
+    e.preventDefault();
+    setAuth({ name: e.target['su-name'].value, email: e.target['su-email'].value });
+    toast('conta criada com sucesso! seja bem-vindo.');
+    redirectAfterAuth();
+    return false;
+  }
+</script>
+</body>
+</html>
