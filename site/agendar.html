@@ -3,19 +3,6 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script>
-  // Auth gate — must run before page renders
-  (function() {
-    try {
-      var auth = JSON.parse(localStorage.getItem('sloward-auth') || 'null');
-      if (!auth || !auth.email) {
-        window.location.replace('login.html?next=agendar.html');
-      }
-    } catch (e) {
-      window.location.replace('login.html?next=agendar.html');
-    }
-  })();
-</script>
 <title>Agendar — Sloward Barbershop</title>
 <meta name="description" content="Agende sua visita à Sloward Barbershop em 3 passos simples. Confirmação rápida pelo WhatsApp.">
 <meta name="keywords" content="barbearia, barbershop, corte masculino, barba, Franca SP, degradê, Sloward">
@@ -458,17 +445,19 @@
 
 <script src="assets/motion.js"></script>
 <script>
-// Prefill from auth + welcome
+// Prefill from saved data (no login required — pure convenience)
 (function() {
   try {
     const auth = JSON.parse(localStorage.getItem('sloward-auth') || 'null');
     if (auth) {
       const nameInput = document.getElementById('nome');
       if (nameInput && auth.name) nameInput.value = auth.name;
+      const whatsInput = document.getElementById('whats');
+      if (whatsInput && auth.whats) whatsInput.value = auth.whats;
       const chip = document.getElementById('welcomeChip');
       const nameEl = document.getElementById('welcomeName');
-      if (chip && nameEl) {
-        nameEl.textContent = (auth.name || 'cliente').split(' ')[0];
+      if (chip && nameEl && auth.name) {
+        nameEl.textContent = auth.name.split(' ')[0];
         chip.style.display = 'inline-flex';
       }
     }
@@ -638,6 +627,20 @@ function submitForm(e) {
     alert('Selecione uma data e horário no calendário.');
     return false;
   }
+
+  // No login required to book. If the visitor isn't logged in yet, we
+  // remember their name + whatsapp locally so the next visit is prefilled.
+  // (This is a convenience cache, not authentication — same mock storage.)
+  try {
+    const existing = JSON.parse(localStorage.getItem('sloward-auth') || 'null');
+    if (!existing || !existing.email) {
+      localStorage.setItem('sloward-auth', JSON.stringify({
+        name: nome,
+        whats: whats,
+        timestamp: Date.now()
+      }));
+    }
+  } catch (err) { /* storage unavailable — proceed anyway */ }
 
   // Format date as DD/MM/YYYY for human readability
   const [y, m, d] = data.split('-');
