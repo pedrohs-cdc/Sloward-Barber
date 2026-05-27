@@ -334,10 +334,8 @@
 
   <div class="toast" id="toast"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  <script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
@@ -350,8 +348,6 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
-    // força região correta
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -403,57 +399,32 @@
           const card = document.createElement('div');
           card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
           card.innerHTML = `
-        <div class="svc-info"><h3>${s.nome}</h3><p>${s.descricao}</p></div>
-        <div class="svc-meta">
-          <span class="svc-price">R$ ${s.preco}</span>
-          <span class="svc-duration">${s.duracao}</span>
-        </div>
-        <div class="svc-actions">
-          <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${id}', ${s.ativo})"></button>
-          <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
-        </div>`;
+            <div class="svc-info"><h3>${s.nome}</h3><p>${s.descricao}</p></div>
+            <div class="svc-meta">
+              <span class="svc-price">R$ ${s.preco}</span>
+              <span class="svc-duration">${s.duracao}</span>
+            </div>
+            <div class="svc-actions">
+              <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${id}', ${s.ativo})"></button>
+              <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
+            </div>`;
           list.appendChild(card);
         });
       } catch (err) {
         console.error('Erro:', err);
       }
     }
-    console.log('loadServices chamado');
-    try {
-      const q = query(collection(db, 'servicos'));
-      const snap = await getDocs(q);
-      console.log('docs encontrados:', snap.size);
-      const list = document.getElementById('services-list');
-      list.innerHTML = '';
-      snap.forEach(docSnap => {
-        const s = docSnap.data();
-        const id = docSnap.id;
-        const card = document.createElement('div');
-        card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
-        card.id = `card-${id}`;
-        card.innerHTML = `
-      <div class="svc-info">
-        <h3>${s.nome}</h3>
-        <p>${s.descricao}</p>
-      </div>
-      <div class="svc-meta">
-        <span class="svc-price">R$ ${s.preco}</span>
-        <span class="svc-duration">${s.duracao}</span>
-      </div>
-      <div class="svc-actions">
-        <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${id}', ${s.ativo})" title="${s.ativo ? 'Desativar' : 'Ativar'}"></button>
-        <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
-      </div>
-    `;
-        list.appendChild(card);
-      });
-    } catch (err) {
-      console.error('Erro ao carregar:', err);
-    }
-    }
 
     window.toggleService = async (id, current) => {
-      await updateDoc(doc(db, 'servicos', id), { ativo: !current });
+      const token = await auth.currentUser.getIdToken();
+      await fetch(
+        `https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos/${id}?updateMask.fieldPaths=ativo`,
+        {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: { ativo: { booleanValue: !current } } })
+        }
+      );
       showToast(current ? 'Serviço desativado' : 'Serviço ativado');
       loadServices();
     };
@@ -471,12 +442,22 @@
 
     window.saveService = async () => {
       const id = document.getElementById('edit-id').value;
-      await updateDoc(doc(db, 'servicos', id), {
-        nome: document.getElementById('edit-nome').value,
-        preco: Number(document.getElementById('edit-preco').value),
-        duracao: document.getElementById('edit-duracao').value,
-        descricao: document.getElementById('edit-descricao').value,
-      });
+      const token = await auth.currentUser.getIdToken();
+      await fetch(
+        `https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos/${id}?updateMask.fieldPaths=nome&updateMask.fieldPaths=preco&updateMask.fieldPaths=duracao&updateMask.fieldPaths=descricao`,
+        {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fields: {
+              nome: { stringValue: document.getElementById('edit-nome').value },
+              preco: { doubleValue: Number(document.getElementById('edit-preco').value) },
+              duracao: { stringValue: document.getElementById('edit-duracao').value },
+              descricao: { stringValue: document.getElementById('edit-descricao').value }
+            }
+          })
+        }
+      );
       closeModal();
       showToast('Serviço atualizado!');
       loadServices();
