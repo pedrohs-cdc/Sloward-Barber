@@ -322,7 +322,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, getDocsFromServer, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
@@ -364,10 +364,10 @@
 
     async function loadServices() {
       console.log('loadServices chamado');
+      const list = document.getElementById('services-list');
       try {
-        const snap = await getDocs(collection(db, 'servicos'));
+        const snap = await getDocsFromServer(collection(db, 'servicos'));
         console.log('docs:', snap.size);
-        const list = document.getElementById('services-list');
         list.innerHTML = '';
         if (snap.empty) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
         snap.forEach(docSnap => {
@@ -388,7 +388,8 @@
           list.appendChild(card);
         });
       } catch (err) {
-        console.error('Erro:', err);
+        console.error('Erro detalhado:', err.code, err.message);
+        list.innerHTML = `<p style="color:#ef4444; font-family:var(--mono); font-size:14px;">Erro: ${err.code} — ${err.message}</p>`;
       }
     }
 
