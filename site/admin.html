@@ -1,261 +1,82 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin — Sloward Barbershop</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
   <style>
-    .admin-wrap {
-      min-height: 100vh;
-      padding: calc(var(--nav-h) + 48px) 0 80px;
-    }
-
-    .admin-header {
-      margin-bottom: 48px;
-    }
-
-    .services-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .svc-card-admin {
-      background: var(--bg-2);
-      border: 1px solid var(--stroke-soft);
-      border-radius: 16px;
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      transition: all 280ms;
-    }
-
-    .svc-card-admin.inactive {
-      opacity: 0.5;
-    }
-
-    .svc-card-admin:hover {
-      border-color: var(--stroke-hot);
-    }
-
-    .svc-info {
-      flex: 1;
-    }
-
-    .svc-info h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-
-    .svc-info p {
-      font-size: 14px;
-      color: var(--ink-mute);
-      margin: 0;
-    }
-
-    .svc-meta {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .svc-price {
-      font-family: var(--mono);
-      font-size: 22px;
-      color: var(--blue-bright);
-      font-weight: 600;
-    }
-
-    .svc-duration {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--ink-mute);
-    }
-
-    .svc-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .toggle-btn {
-      width: 52px;
-      height: 28px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      position: relative;
-      transition: background 240ms;
-      background: var(--stroke-soft);
-    }
-
-    .toggle-btn.on {
-      background: var(--blue);
-    }
-
-    .toggle-btn::after {
-      content: "";
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      transition: transform 240ms;
-    }
-
-    .toggle-btn.on::after {
-      transform: translateX(24px);
-    }
-
-    .edit-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--stroke-hot);
-      background: transparent;
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 220ms;
-    }
-
-    .edit-btn:hover {
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--blue-bright);
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal {
-      background: var(--bg-2);
-      border: 1px solid var(--stroke-hot);
-      border-radius: 20px;
-      padding: 40px;
-      width: min(560px, 92vw);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .modal h2 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-top: 8px;
-    }
-
-    .btn-save {
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-family: var(--mono);
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 220ms;
-    }
-
-    .btn-save:hover {
-      background: var(--blue-bright);
-    }
-
-    .btn-cancel {
-      background: transparent;
-      color: var(--ink-mute);
-      border: 1px solid var(--stroke-soft);
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-family: var(--mono);
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: var(--blue);
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-family: var(--mono);
-      font-size: 14px;
-      z-index: 300;
-      opacity: 0;
-      transform: translateY(16px);
-      transition: all 280ms;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .login-wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .login-box {
-      background: var(--bg-2);
-      border: 1px solid var(--stroke-hot);
-      border-radius: 20px;
-      padding: 48px;
-      width: min(440px, 92vw);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .login-box h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .login-error {
-      color: #ef4444;
-      font-family: var(--mono);
-      font-size: 13px;
-      display: none;
-    }
+    .admin-wrap { min-height: 100vh; padding: calc(var(--nav-h) + 48px) 0 80px; }
+    .admin-tabs { display: flex; gap: 8px; margin-bottom: 40px; background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 12px; padding: 4px; width: fit-content; }
+    .admin-tab { padding: 10px 24px; border-radius: 8px; border: none; background: transparent; font-family: var(--mono); font-size: 13px; color: var(--ink-mute); cursor: pointer; transition: all 220ms; }
+    .admin-tab.active { background: var(--blue); color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .services-grid { display: flex; flex-direction: column; gap: 16px; }
+    .svc-card-admin { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 24px 28px; display: flex; align-items: center; gap: 24px; transition: all 280ms; }
+    .svc-card-admin.inactive { opacity: 0.5; }
+    .svc-card-admin:hover { border-color: var(--stroke-hot); }
+    .svc-info { flex: 1; }
+    .svc-info h3 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+    .svc-info p { font-size: 14px; color: var(--ink-mute); margin: 0; }
+    .svc-meta { display: flex; gap: 16px; align-items: center; }
+    .svc-price { font-family: var(--mono); font-size: 22px; color: var(--blue-bright); font-weight: 600; }
+    .svc-duration { font-family: var(--mono); font-size: 13px; color: var(--ink-mute); }
+    .svc-actions { display: flex; gap: 10px; align-items: center; }
+    .toggle-btn { width: 52px; height: 28px; border-radius: 14px; border: none; cursor: pointer; position: relative; transition: background 240ms; background: var(--stroke-soft); }
+    .toggle-btn.on { background: var(--blue); }
+    .toggle-btn::after { content: ""; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 240ms; }
+    .toggle-btn.on::after { transform: translateX(24px); }
+    .edit-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--stroke-hot); background: transparent; color: var(--ink); font-family: var(--mono); font-size: 13px; cursor: pointer; transition: all 220ms; }
+    .edit-btn:hover { background: rgba(59,130,246,0.1); color: var(--blue-bright); }
+    /* Agendamentos */
+    .agenda-controls { display: flex; gap: 16px; align-items: center; margin-bottom: 32px; flex-wrap: wrap; }
+    .agenda-date { font-family: var(--mono); font-size: 14px; background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 8px; padding: 10px 16px; color: var(--ink); cursor: pointer; }
+    .barbeiro-filter { display: flex; gap: 8px; }
+    .barbeiro-btn { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--stroke-soft); background: transparent; font-family: var(--mono); font-size: 13px; color: var(--ink-mute); cursor: pointer; transition: all 220ms; }
+    .barbeiro-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .agenda-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    .agenda-stat { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 12px; padding: 20px 24px; }
+    .agenda-stat__num { font-family: var(--display); font-size: 36px; font-weight: 700; color: var(--blue-bright); letter-spacing: -0.03em; }
+    .agenda-stat__label { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); margin-top: 4px; }
+    .agenda-list { display: flex; flex-direction: column; gap: 12px; }
+    .agenda-card { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 14px; padding: 20px 24px; display: grid; grid-template-columns: 80px 1fr 1fr auto; gap: 16px; align-items: center; transition: all 240ms; }
+    .agenda-card:hover { border-color: var(--stroke-hot); }
+    .agenda-card.cancelado { opacity: 0.4; }
+    .agenda-hora { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--blue-bright); }
+    .agenda-cliente h4 { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+    .agenda-cliente p { font-size: 13px; color: var(--ink-mute); margin: 0; font-family: var(--mono); }
+    .agenda-servico { font-size: 14px; color: var(--ink-mute); }
+    .agenda-servico strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 2px; }
+    .agenda-actions { display: flex; gap: 8px; }
+    .cancel-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(239,68,68,0.4); background: transparent; color: #ef4444; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: all 220ms; }
+    .cancel-btn:hover { background: rgba(239,68,68,0.1); }
+    .status-badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .status-badge.cancelado { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.3); }
+    .empty-state { text-align: center; padding: 80px 40px; color: var(--ink-mute); font-family: var(--mono); font-size: 14px; }
+    @media (max-width: 740px) { .agenda-card { grid-template-columns: 60px 1fr; } .agenda-servico, .agenda-actions { grid-column: 2; } }
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--bg-2); border: 1px solid var(--stroke-hot); border-radius: 20px; padding: 40px; width: min(560px, 92vw); display: flex; flex-direction: column; gap: 20px; }
+    .modal h2 { margin: 0; font-size: 24px; }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+    .btn-save { background: var(--blue); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-family: var(--mono); font-size: 14px; cursor: pointer; }
+    .btn-save:hover { background: var(--blue-bright); }
+    .btn-cancel { background: transparent; color: var(--ink-mute); border: 1px solid var(--stroke-soft); padding: 12px 28px; border-radius: 8px; font-family: var(--mono); font-size: 14px; cursor: pointer; }
+    .toast { position: fixed; bottom: 32px; right: 32px; background: var(--blue); color: #fff; padding: 14px 24px; border-radius: 10px; font-family: var(--mono); font-size: 14px; z-index: 300; opacity: 0; transform: translateY(16px); transition: all 280ms; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .login-box { background: var(--bg-2); border: 1px solid var(--stroke-hot); border-radius: 20px; padding: 48px; width: min(440px, 92vw); display: flex; flex-direction: column; gap: 24px; }
+    .login-box h1 { margin: 0; font-size: 28px; }
+    .login-error { color: #ef4444; font-family: var(--mono); font-size: 13px; display: none; }
   </style>
 </head>
-
 <body>
   <div class="scroll-progress"></div>
-
   <nav class="nav">
     <div class="container">
       <a href="index.html" class="nav__brand"><span class="dot"></span>SLOWARD</a>
@@ -266,6 +87,7 @@
     </div>
   </nav>
 
+  <!-- LOGIN -->
   <div class="login-wrap" id="login-screen">
     <div class="login-box">
       <div>
@@ -273,34 +95,64 @@
         <h1>Painel <span style="color:var(--blue-bright);">Admin</span></h1>
         <p style="color:var(--ink-mute);margin-top:8px;">Entre com suas credenciais de barbeiro.</p>
       </div>
-      <div class="field">
-        <label>E-mail</label>
-        <input type="email" id="email" placeholder="pedro@sloward.com.br" />
-      </div>
-      <div class="field">
-        <label>Senha</label>
-        <input type="password" id="password" placeholder="••••••••" />
-      </div>
+      <div class="field"><label>E-mail</label><input type="email" id="email" placeholder="pedro@sloward.com.br" /></div>
+      <div class="field"><label>Senha</label><input type="password" id="password" placeholder="••••••••" /></div>
       <p class="login-error" id="login-error">E-mail ou senha incorretos.</p>
-      <button class="btn btn--primary" onclick="login()" style="width:100%;justify-content:center;">
-        entrar <span class="arrow">→</span>
-      </button>
+      <button class="btn btn--primary" onclick="login()" style="width:100%;justify-content:center;">entrar <span class="arrow">→</span></button>
     </div>
   </div>
 
+  <!-- ADMIN -->
   <div class="admin-wrap" id="admin-screen" style="display:none;">
     <div class="container">
-      <div class="admin-header">
+      <div style="margin-bottom:48px;">
         <div class="eyebrow">// painel de controle</div>
-        <h1 class="h1" style="margin-top:16px;">Gerenciar <span style="color:var(--blue-bright);">Serviços</span></h1>
-        <p class="lead" style="margin-top:16px;">Ative, desative ou edite os serviços disponíveis no site.</p>
+        <h1 class="h1" style="margin-top:16px;">Sloward <span style="color:var(--blue-bright);">Admin</span></h1>
       </div>
-      <div class="services-grid" id="services-list">
-        <div style="color:var(--ink-mute);font-family:var(--mono);">Carregando serviços...</div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('servicos')">// serviços</button>
+        <button class="admin-tab" onclick="switchTab('agendamentos')">// agendamentos</button>
+      </div>
+
+      <!-- Tab Serviços -->
+      <div class="tab-panel active" id="tab-servicos">
+        <div style="margin-bottom:32px;">
+          <h2 class="h2">Gerenciar <span style="color:var(--blue-bright);">Serviços</span></h2>
+          <p style="color:var(--ink-mute);margin-top:8px;">Ative, desative ou edite os serviços disponíveis no site.</p>
+        </div>
+        <div class="services-grid" id="services-list">
+          <div style="color:var(--ink-mute);font-family:var(--mono);">Carregando serviços...</div>
+        </div>
+      </div>
+
+      <!-- Tab Agendamentos -->
+      <div class="tab-panel" id="tab-agendamentos">
+        <div style="margin-bottom:32px;">
+          <h2 class="h2">Agenda <span style="color:var(--blue-bright);">do Dia</span></h2>
+        </div>
+        <div class="agenda-controls">
+          <input type="date" class="agenda-date" id="agenda-date" />
+          <div class="barbeiro-filter">
+            <button class="barbeiro-btn active" onclick="setBarbeiro('todos')">todos</button>
+            <button class="barbeiro-btn" onclick="setBarbeiro('pedro')">pedro</button>
+            <button class="barbeiro-btn" onclick="setBarbeiro('andre')">andré</button>
+          </div>
+        </div>
+        <div class="agenda-summary">
+          <div class="agenda-stat"><div class="agenda-stat__num" id="stat-total">0</div><div class="agenda-stat__label">// agendamentos</div></div>
+          <div class="agenda-stat"><div class="agenda-stat__num" id="stat-confirmados">0</div><div class="agenda-stat__label">// confirmados</div></div>
+          <div class="agenda-stat"><div class="agenda-stat__num" id="stat-cancelados">0</div><div class="agenda-stat__label">// cancelados</div></div>
+        </div>
+        <div class="agenda-list" id="agenda-list">
+          <div class="empty-state">selecione uma data para ver os agendamentos</div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal Editar Serviço -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <h2>Editar Serviço</h2>
@@ -308,8 +160,7 @@
       <div class="field"><label>Nome</label><input type="text" id="edit-nome" /></div>
       <div class="field"><label>Preço (R$)</label><input type="number" id="edit-preco" /></div>
       <div class="field"><label>Duração</label><input type="text" id="edit-duracao" /></div>
-      <div class="field"><label>Descrição</label><textarea id="edit-descricao" rows="3"
-          style="resize:vertical;"></textarea></div>
+      <div class="field"><label>Descrição</label><textarea id="edit-descricao" rows="3" style="resize:vertical;"></textarea></div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">cancelar</button>
         <button class="btn-save" onclick="saveService()">salvar alterações</button>
@@ -322,50 +173,20 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const PROJECT = 'sloward-barbershop';
-    const COLLECTION = 'servicos';
-    const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/${COLLECTION}`;
-
-    const firebaseConfig = {
+    const app = initializeApp({
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
       authDomain: "sloward-barbershop.firebaseapp.com",
-      projectId: PROJECT,
+      projectId: "sloward-barbershop",
       storageBucket: "sloward-barbershop.firebasestorage.app",
       messagingSenderId: "357437108740",
       appId: "1:357437108740:web:ce61f750671c15b792fb51"
-    };
-
-    const app = initializeApp(firebaseConfig);
+    });
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // Helpers para converter entre REST e JS
-    function fromFirestore(doc) {
-      const id = doc.name.split('/').pop();
-      const fields = doc.fields || {};
-      const data = {};
-      for (const [k, v] of Object.entries(fields)) {
-        if (v.stringValue !== undefined) data[k] = v.stringValue;
-        else if (v.integerValue !== undefined) data[k] = Number(v.integerValue);
-        else if (v.doubleValue !== undefined) data[k] = Number(v.doubleValue);
-        else if (v.booleanValue !== undefined) data[k] = v.booleanValue;
-      }
-      return { id, ...data };
-    }
-
-    function toFirestoreFields(data) {
-      const fields = {};
-      for (const [k, v] of Object.entries(data)) {
-        if (typeof v === 'string') fields[k] = { stringValue: v };
-        else if (typeof v === 'number') fields[k] = { integerValue: v };
-        else if (typeof v === 'boolean') fields[k] = { booleanValue: v };
-      }
-      return { fields };
-    }
-
-    async function getToken() {
-      return auth.currentUser.getIdToken();
-    }
+    let currentBarbeiro = 'todos';
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -373,6 +194,10 @@
         document.getElementById('admin-screen').style.display = 'block';
         document.getElementById('user-email').textContent = user.email;
         loadServices();
+        // Set today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('agenda-date').value = today;
+        loadAgendamentos(today);
       } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('admin-screen').style.display = 'none';
@@ -382,36 +207,43 @@
     window.login = async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (e) {
-        document.getElementById('login-error').style.display = 'block';
-      }
+      try { await signInWithEmailAndPassword(auth, email, password); }
+      catch(e) { document.getElementById('login-error').style.display = 'block'; }
     };
-
     window.logout = () => signOut(auth);
 
+    // Tab switching
+    window.switchTab = (tab) => {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      event.target.classList.add('active');
+    };
+
+    // Barbeiro filter
+    window.setBarbeiro = (b) => {
+      currentBarbeiro = b;
+      document.querySelectorAll('.barbeiro-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      const date = document.getElementById('agenda-date').value;
+      if (date) loadAgendamentos(date);
+    };
+
+    // Date change
+    document.getElementById('agenda-date').addEventListener('change', e => {
+      loadAgendamentos(e.target.value);
+    });
+
+    // Load services
     async function loadServices() {
-      const list = document.getElementById('services-list');
       try {
-        const token = await getToken();
-        const res = await fetch(BASE, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const json = await res.json();
-        console.log('REST response:', json);
-
-        if (!res.ok) {
-          list.innerHTML = `<p style="color:#ef4444;font-family:var(--mono);">Erro ${res.status}: ${json.error?.message}</p>`;
-          return;
-        }
-
-        const docs = (json.documents || []).map(fromFirestore);
-        docs.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
-
+        const snap = await getDocs(collection(db, 'servicos'));
+        const list = document.getElementById('services-list');
         list.innerHTML = '';
+        const docs = [];
+        snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+        docs.sort((a, b) => (a.ordem||0) - (b.ordem||0));
         if (!docs.length) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
-
         docs.forEach(s => {
           const card = document.createElement('div');
           card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
@@ -427,20 +259,11 @@
             </div>`;
           list.appendChild(card);
         });
-      } catch (err) {
-        console.error('Erro:', err);
-        list.innerHTML = `<p style="color:#ef4444;font-family:var(--mono);">Erro: ${err.message}</p>`;
-      }
+      } catch(err) { console.error(err); }
     }
 
     window.toggleService = async (id, current) => {
-      const token = await getToken();
-      const url = `${BASE}/${id}?updateMask.fieldPaths=ativo`;
-      await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fields: { ativo: { booleanValue: !current } } })
-      });
+      await updateDoc(doc(db, 'servicos', id), { ativo: !current });
       showToast(current ? 'Serviço desativado' : 'Serviço ativado');
       loadServices();
     };
@@ -453,26 +276,84 @@
       document.getElementById('edit-descricao').value = descricao;
       document.getElementById('modal').classList.add('open');
     };
-
     window.closeModal = () => document.getElementById('modal').classList.remove('open');
 
     window.saveService = async () => {
       const id = document.getElementById('edit-id').value;
-      const token = await getToken();
-      const url = `${BASE}/${id}?updateMask.fieldPaths=nome&updateMask.fieldPaths=preco&updateMask.fieldPaths=duracao&updateMask.fieldPaths=descricao`;
-      await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(toFirestoreFields({
-          nome: document.getElementById('edit-nome').value,
-          preco: Number(document.getElementById('edit-preco').value),
-          duracao: document.getElementById('edit-duracao').value,
-          descricao: document.getElementById('edit-descricao').value,
-        }))
+      await updateDoc(doc(db, 'servicos', id), {
+        nome: document.getElementById('edit-nome').value,
+        preco: Number(document.getElementById('edit-preco').value),
+        duracao: document.getElementById('edit-duracao').value,
+        descricao: document.getElementById('edit-descricao').value,
       });
-      closeModal();
-      showToast('Serviço atualizado!');
-      loadServices();
+      closeModal(); showToast('Serviço atualizado!'); loadServices();
+    };
+
+    // Load agendamentos
+    async function loadAgendamentos(date) {
+      const list = document.getElementById('agenda-list');
+      list.innerHTML = '<div class="empty-state">carregando...</div>';
+      try {
+        let q = query(collection(db, 'agendamentos'), where('data', '==', date));
+        const snap = await getDocs(q);
+        let docs = [];
+        snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+
+        // Filter by barbeiro
+        if (currentBarbeiro !== 'todos') {
+          docs = docs.filter(d => d.barbeiro === currentBarbeiro);
+        }
+
+        // Sort by hora
+        docs.sort((a, b) => a.hora.localeCompare(b.hora));
+
+        // Stats
+        const confirmados = docs.filter(d => d.status !== 'cancelado').length;
+        const cancelados = docs.filter(d => d.status === 'cancelado').length;
+        document.getElementById('stat-total').textContent = docs.length;
+        document.getElementById('stat-confirmados').textContent = confirmados;
+        document.getElementById('stat-cancelados').textContent = cancelados;
+
+        if (!docs.length) {
+          list.innerHTML = '<div class="empty-state">nenhum agendamento para esta data</div>';
+          return;
+        }
+
+        list.innerHTML = '';
+        docs.forEach(a => {
+          const card = document.createElement('div');
+          card.className = `agenda-card ${a.status === 'cancelado' ? 'cancelado' : ''}`;
+          const barbeiroNome = a.barbeiro === 'pedro' ? 'Pedro' : 'André';
+          const servicoNome = a.servicoNome ? a.servicoNome.split('—')[0].trim() : a.servicoId;
+          card.innerHTML = `
+            <div class="agenda-hora">${a.hora}</div>
+            <div class="agenda-cliente">
+              <h4>${a.clienteNome}</h4>
+              <p>${a.clienteEmail}</p>
+            </div>
+            <div class="agenda-servico">
+              <strong>${servicoNome}</strong>
+              // ${barbeiroNome}
+              ${a.obs ? `<br><span style="font-size:12px;color:var(--ink-mute);">${a.obs}</span>` : ''}
+            </div>
+            <div class="agenda-actions">
+              <span class="status-badge ${a.status === 'cancelado' ? 'cancelado' : ''}">${a.status}</span>
+              ${a.status !== 'cancelado' ? `<button class="cancel-btn" onclick="cancelarAgendamento('${a.id}')">cancelar</button>` : ''}
+            </div>`;
+          list.appendChild(card);
+        });
+      } catch(err) {
+        console.error(err);
+        list.innerHTML = '<div class="empty-state" style="color:#ef4444;">erro ao carregar agendamentos</div>';
+      }
+    }
+
+    window.cancelarAgendamento = async (id) => {
+      if (!confirm('Cancelar este agendamento?')) return;
+      await updateDoc(doc(db, 'agendamentos', id), { status: 'cancelado' });
+      showToast('Agendamento cancelado');
+      const date = document.getElementById('agenda-date').value;
+      loadAgendamentos(date);
     };
 
     function showToast(msg) {
@@ -483,5 +364,4 @@
     }
   </script>
 </body>
-
 </html>
