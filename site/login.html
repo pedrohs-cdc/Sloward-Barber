@@ -260,9 +260,9 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Se já está logado, redireciona
+// Se já está logado ao carregar a página, redireciona
 onAuthStateChanged(auth, user => {
-  if (user) {
+  if (user && !window._loggingIn) {
     const params = new URLSearchParams(location.search);
     const next = params.get('next');
     const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
@@ -308,9 +308,15 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
   const pass = document.getElementById('login-pass').value;
   setLoading('login-btn', true);
   try {
+    window._loggingIn = true;
     await signInWithEmailAndPassword(auth, email, pass);
     showToast('login realizado! redirecionando...');
+    const params = new URLSearchParams(location.search);
+    const next = params.get('next');
+    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
+    setTimeout(() => { window.location.href = safe; }, 1200);
   } catch(err) {
+    window._loggingIn = false;
     showError('login-error', translateError(err.code));
     setLoading('login-btn', false);
   }
@@ -326,9 +332,9 @@ document.getElementById('signupForm').addEventListener('submit', async e => {
   const pass = document.getElementById('su-pass').value;
   setLoading('signup-btn', true);
   try {
+    window._loggingIn = true;
     const cred = await createUserWithEmailAndPassword(auth, email, pass);
     await updateProfile(cred.user, { displayName: name });
-    // Salva dados extras no Firestore
     await setDoc(doc(db, 'clientes', cred.user.uid), {
       nome: name,
       email: email,
@@ -336,7 +342,9 @@ document.getElementById('signupForm').addEventListener('submit', async e => {
       criadoEm: new Date().toISOString()
     });
     showToast('conta criada! seja bem-vindo.');
+    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
   } catch(err) {
+    window._loggingIn = false;
     showError('signup-error', translateError(err.code));
     setLoading('signup-btn', false);
   }
