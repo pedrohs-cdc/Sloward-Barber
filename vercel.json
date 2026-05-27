@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/servicos", "destination": "/servicos.html" },
+    { "source": "/equipe", "destination": "/equipe.html" },
+    { "source": "/galeria", "destination": "/galeria.html" },
+    { "source": "/agendar", "destination": "/agendar.html" },
+    { "source": "/localizacao", "destination": "/localizacao.html" },
+    { "source": "/blog", "destination": "/blog.html" }
+  ]
+}
