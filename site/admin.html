@@ -259,8 +259,8 @@
   <nav class="nav">
     <div class="container">
       <a href="index.html" class="nav__brand"><span class="dot"></span>SLOWARD</a>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span id="user-email" style="font-family:var(--mono); font-size:13px; color:var(--ink-mute);"></span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="user-email" style="font-family:var(--mono);font-size:13px;color:var(--ink-mute);"></span>
         <button onclick="logout()" class="edit-btn">sair</button>
       </div>
     </div>
@@ -271,7 +271,7 @@
       <div>
         <div class="chip" style="margin-bottom:16px;"><span class="dot"></span>// acesso restrito</div>
         <h1>Painel <span style="color:var(--blue-bright);">Admin</span></h1>
-        <p style="color:var(--ink-mute); margin-top:8px;">Entre com suas credenciais de barbeiro.</p>
+        <p style="color:var(--ink-mute);margin-top:8px;">Entre com suas credenciais de barbeiro.</p>
       </div>
       <div class="field">
         <label>E-mail</label>
@@ -282,7 +282,7 @@
         <input type="password" id="password" placeholder="••••••••" />
       </div>
       <p class="login-error" id="login-error">E-mail ou senha incorretos.</p>
-      <button class="btn btn--primary" onclick="login()" style="width:100%; justify-content:center;">
+      <button class="btn btn--primary" onclick="login()" style="width:100%;justify-content:center;">
         entrar <span class="arrow">→</span>
       </button>
     </div>
@@ -296,7 +296,7 @@
         <p class="lead" style="margin-top:16px;">Ative, desative ou edite os serviços disponíveis no site.</p>
       </div>
       <div class="services-grid" id="services-list">
-        <div style="color:var(--ink-mute); font-family:var(--mono);">Carregando serviços...</div>
+        <div style="color:var(--ink-mute);font-family:var(--mono);">Carregando serviços...</div>
       </div>
     </div>
   </div>
@@ -322,12 +322,15 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, getDocsFromServer, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const PROJECT = 'sloward-barbershop';
+    const COLLECTION = 'servicos';
+    const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/${COLLECTION}`;
 
     const firebaseConfig = {
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
       authDomain: "sloward-barbershop.firebaseapp.com",
-      projectId: "sloward-barbershop",
+      projectId: PROJECT,
       storageBucket: "sloward-barbershop.firebasestorage.app",
       messagingSenderId: "357437108740",
       appId: "1:357437108740:web:ce61f750671c15b792fb51"
@@ -335,8 +338,34 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
-    window._db = db;
+
+    // Helpers para converter entre REST e JS
+    function fromFirestore(doc) {
+      const id = doc.name.split('/').pop();
+      const fields = doc.fields || {};
+      const data = {};
+      for (const [k, v] of Object.entries(fields)) {
+        if (v.stringValue !== undefined) data[k] = v.stringValue;
+        else if (v.integerValue !== undefined) data[k] = Number(v.integerValue);
+        else if (v.doubleValue !== undefined) data[k] = Number(v.doubleValue);
+        else if (v.booleanValue !== undefined) data[k] = v.booleanValue;
+      }
+      return { id, ...data };
+    }
+
+    function toFirestoreFields(data) {
+      const fields = {};
+      for (const [k, v] of Object.entries(data)) {
+        if (typeof v === 'string') fields[k] = { stringValue: v };
+        else if (typeof v === 'number') fields[k] = { integerValue: v };
+        else if (typeof v === 'boolean') fields[k] = { booleanValue: v };
+      }
+      return { fields };
+    }
+
+    async function getToken() {
+      return auth.currentUser.getIdToken();
+    }
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -363,16 +392,27 @@
     window.logout = () => signOut(auth);
 
     async function loadServices() {
-      console.log('loadServices chamado');
       const list = document.getElementById('services-list');
       try {
-        const snap = await getDocsFromServer(collection(db, 'servicos'));
-        console.log('docs:', snap.size);
+        const token = await getToken();
+        const res = await fetch(BASE, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await res.json();
+        console.log('REST response:', json);
+
+        if (!res.ok) {
+          list.innerHTML = `<p style="color:#ef4444;font-family:var(--mono);">Erro ${res.status}: ${json.error?.message}</p>`;
+          return;
+        }
+
+        const docs = (json.documents || []).map(fromFirestore);
+        docs.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+
         list.innerHTML = '';
-        if (snap.empty) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
-        snap.forEach(docSnap => {
-          const s = docSnap.data();
-          const id = docSnap.id;
+        if (!docs.length) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
+
+        docs.forEach(s => {
           const card = document.createElement('div');
           card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
           card.innerHTML = `
@@ -382,19 +422,25 @@
               <span class="svc-duration">${s.duracao}</span>
             </div>
             <div class="svc-actions">
-              <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${id}', ${s.ativo})"></button>
-              <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
+              <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${s.id}', ${s.ativo})"></button>
+              <button class="edit-btn" onclick="openModal('${s.id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
             </div>`;
           list.appendChild(card);
         });
       } catch (err) {
-        console.error('Erro detalhado:', err.code, err.message);
-        list.innerHTML = `<p style="color:#ef4444; font-family:var(--mono); font-size:14px;">Erro: ${err.code} — ${err.message}</p>`;
+        console.error('Erro:', err);
+        list.innerHTML = `<p style="color:#ef4444;font-family:var(--mono);">Erro: ${err.message}</p>`;
       }
     }
 
     window.toggleService = async (id, current) => {
-      await updateDoc(doc(db, 'servicos', id), { ativo: !current });
+      const token = await getToken();
+      const url = `${BASE}/${id}?updateMask.fieldPaths=ativo`;
+      await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: { ativo: { booleanValue: !current } } })
+      });
       showToast(current ? 'Serviço desativado' : 'Serviço ativado');
       loadServices();
     };
@@ -412,11 +458,17 @@
 
     window.saveService = async () => {
       const id = document.getElementById('edit-id').value;
-      await updateDoc(doc(db, 'servicos', id), {
-        nome: document.getElementById('edit-nome').value,
-        preco: Number(document.getElementById('edit-preco').value),
-        duracao: document.getElementById('edit-duracao').value,
-        descricao: document.getElementById('edit-descricao').value,
+      const token = await getToken();
+      const url = `${BASE}/${id}?updateMask.fieldPaths=nome&updateMask.fieldPaths=preco&updateMask.fieldPaths=duracao&updateMask.fieldPaths=descricao`;
+      await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(toFirestoreFields({
+          nome: document.getElementById('edit-nome').value,
+          preco: Number(document.getElementById('edit-preco').value),
+          duracao: document.getElementById('edit-duracao').value,
+          descricao: document.getElementById('edit-descricao').value,
+        }))
       });
       closeModal();
       showToast('Serviço atualizado!');
