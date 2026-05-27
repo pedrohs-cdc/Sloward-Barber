@@ -254,7 +254,6 @@
 </head>
 
 <body>
-
   <div class="scroll-progress"></div>
 
   <nav class="nav">
@@ -267,7 +266,6 @@
     </div>
   </nav>
 
-  <!-- LOGIN -->
   <div class="login-wrap" id="login-screen">
     <div class="login-box">
       <div>
@@ -290,7 +288,6 @@
     </div>
   </div>
 
-  <!-- ADMIN PANEL -->
   <div class="admin-wrap" id="admin-screen" style="display:none;">
     <div class="container">
       <div class="admin-header">
@@ -304,27 +301,15 @@
     </div>
   </div>
 
-  <!-- EDIT MODAL -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
       <h2>Editar Serviço</h2>
       <input type="hidden" id="edit-id" />
-      <div class="field">
-        <label>Nome</label>
-        <input type="text" id="edit-nome" />
-      </div>
-      <div class="field">
-        <label>Preço (R$)</label>
-        <input type="number" id="edit-preco" />
-      </div>
-      <div class="field">
-        <label>Duração</label>
-        <input type="text" id="edit-duracao" />
-      </div>
-      <div class="field">
-        <label>Descrição</label>
-        <textarea id="edit-descricao" rows="3" style="resize:vertical;"></textarea>
-      </div>
+      <div class="field"><label>Nome</label><input type="text" id="edit-nome" /></div>
+      <div class="field"><label>Preço (R$)</label><input type="number" id="edit-preco" /></div>
+      <div class="field"><label>Duração</label><input type="text" id="edit-duracao" /></div>
+      <div class="field"><label>Descrição</label><textarea id="edit-descricao" rows="3"
+          style="resize:vertical;"></textarea></div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">cancelar</button>
         <button class="btn-save" onclick="saveService()">salvar alterações</button>
@@ -334,8 +319,10 @@
 
   <div class="toast" id="toast"></div>
 
-  <script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
@@ -348,6 +335,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -376,26 +364,14 @@
     async function loadServices() {
       console.log('loadServices chamado');
       try {
-        const token = await auth.currentUser.getIdToken();
-        const res = await fetch(
-          'https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos',
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const data = await res.json();
-        console.log('resposta:', data);
+        const snap = await getDocs(collection(db, 'servicos'));
+        console.log('docs:', snap.size);
         const list = document.getElementById('services-list');
         list.innerHTML = '';
-        if (!data.documents) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
-        data.documents.forEach(docData => {
-          const f = docData.fields;
-          const id = docData.name.split('/').pop();
-          const s = {
-            nome: f.nome?.stringValue,
-            preco: f.preco?.doubleValue || f.preco?.integerValue,
-            duracao: f.duracao?.stringValue,
-            descricao: f.descricao?.stringValue,
-            ativo: f.ativo?.booleanValue
-          };
+        if (snap.empty) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
+        snap.forEach(docSnap => {
+          const s = docSnap.data();
+          const id = docSnap.id;
           const card = document.createElement('div');
           card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
           card.innerHTML = `
@@ -416,15 +392,7 @@
     }
 
     window.toggleService = async (id, current) => {
-      const token = await auth.currentUser.getIdToken();
-      await fetch(
-        `https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos/${id}?updateMask.fieldPaths=ativo`,
-        {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fields: { ativo: { booleanValue: !current } } })
-        }
-      );
+      await updateDoc(doc(db, 'servicos', id), { ativo: !current });
       showToast(current ? 'Serviço desativado' : 'Serviço ativado');
       loadServices();
     };
@@ -442,22 +410,12 @@
 
     window.saveService = async () => {
       const id = document.getElementById('edit-id').value;
-      const token = await auth.currentUser.getIdToken();
-      await fetch(
-        `https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos/${id}?updateMask.fieldPaths=nome&updateMask.fieldPaths=preco&updateMask.fieldPaths=duracao&updateMask.fieldPaths=descricao`,
-        {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields: {
-              nome: { stringValue: document.getElementById('edit-nome').value },
-              preco: { doubleValue: Number(document.getElementById('edit-preco').value) },
-              duracao: { stringValue: document.getElementById('edit-duracao').value },
-              descricao: { stringValue: document.getElementById('edit-descricao').value }
-            }
-          })
-        }
-      );
+      await updateDoc(doc(db, 'servicos', id), {
+        nome: document.getElementById('edit-nome').value,
+        preco: Number(document.getElementById('edit-preco').value),
+        duracao: document.getElementById('edit-duracao').value,
+        descricao: document.getElementById('edit-descricao').value,
+      });
       closeModal();
       showToast('Serviço atualizado!');
       loadServices();
