@@ -351,6 +351,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    // força região correta
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -379,18 +380,58 @@
     async function loadServices() {
       console.log('loadServices chamado');
       try {
-        const q = query(collection(db, 'servicos'));
-        const snap = await getDocs(q);
-        console.log('docs encontrados:', snap.size);
+        const token = await auth.currentUser.getIdToken();
+        const res = await fetch(
+          'https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const data = await res.json();
+        console.log('resposta:', data);
         const list = document.getElementById('services-list');
         list.innerHTML = '';
-        snap.forEach(docSnap => {
-          const s = docSnap.data();
-          const id = docSnap.id;
+        if (!data.documents) { list.innerHTML = '<p>Nenhum serviço encontrado.</p>'; return; }
+        data.documents.forEach(docData => {
+          const f = docData.fields;
+          const id = docData.name.split('/').pop();
+          const s = {
+            nome: f.nome?.stringValue,
+            preco: f.preco?.doubleValue || f.preco?.integerValue,
+            duracao: f.duracao?.stringValue,
+            descricao: f.descricao?.stringValue,
+            ativo: f.ativo?.booleanValue
+          };
           const card = document.createElement('div');
           card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
-          card.id = `card-${id}`;
           card.innerHTML = `
+        <div class="svc-info"><h3>${s.nome}</h3><p>${s.descricao}</p></div>
+        <div class="svc-meta">
+          <span class="svc-price">R$ ${s.preco}</span>
+          <span class="svc-duration">${s.duracao}</span>
+        </div>
+        <div class="svc-actions">
+          <button class="toggle-btn ${s.ativo ? 'on' : ''}" onclick="toggleService('${id}', ${s.ativo})"></button>
+          <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
+        </div>`;
+          list.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Erro:', err);
+      }
+    }
+    console.log('loadServices chamado');
+    try {
+      const q = query(collection(db, 'servicos'));
+      const snap = await getDocs(q);
+      console.log('docs encontrados:', snap.size);
+      const list = document.getElementById('services-list');
+      list.innerHTML = '';
+      snap.forEach(docSnap => {
+        const s = docSnap.data();
+        const id = docSnap.id;
+        const card = document.createElement('div');
+        card.className = `svc-card-admin ${s.ativo ? '' : 'inactive'}`;
+        card.id = `card-${id}`;
+        card.innerHTML = `
       <div class="svc-info">
         <h3>${s.nome}</h3>
         <p>${s.descricao}</p>
@@ -404,11 +445,11 @@
         <button class="edit-btn" onclick="openModal('${id}', '${s.nome}', ${s.preco}, '${s.duracao}', \`${s.descricao}\`)">editar</button>
       </div>
     `;
-          list.appendChild(card);
-        });
-      } catch (err) {
-        console.error('Erro ao carregar:', err);
-      }
+        list.appendChild(card);
+      });
+    } catch (err) {
+      console.error('Erro ao carregar:', err);
+    }
     }
 
     window.toggleService = async (id, current) => {
