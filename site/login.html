@@ -263,6 +263,14 @@ const db = getFirestore(app);
 // Se já está logado ao carregar a página, redireciona
 onAuthStateChanged(auth, user => {
   if (user && !window._loggingIn) {
+    // Garante que o localStorage está sincronizado caso o usuário já estivesse logado
+    const stored = localStorage.getItem('sloward-auth');
+    if (!stored) {
+      localStorage.setItem('sloward-auth', JSON.stringify({
+        email: user.email,
+        name: user.displayName || ''
+      }));
+    }
     const params = new URLSearchParams(location.search);
     const next = params.get('next');
     const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
@@ -309,7 +317,12 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
   setLoading('login-btn', true);
   try {
     window._loggingIn = true;
-    await signInWithEmailAndPassword(auth, email, pass);
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    // ── Sincroniza localStorage para o motion.js detectar o usuário logado ──
+    localStorage.setItem('sloward-auth', JSON.stringify({
+      email: cred.user.email,
+      name: cred.user.displayName || ''
+    }));
     showToast('login realizado! redirecionando...');
     const params = new URLSearchParams(location.search);
     const next = params.get('next');
@@ -335,6 +348,11 @@ document.getElementById('signupForm').addEventListener('submit', async e => {
     window._loggingIn = true;
     const cred = await createUserWithEmailAndPassword(auth, email, pass);
     await updateProfile(cred.user, { displayName: name });
+    // ── Sincroniza localStorage para o motion.js detectar o usuário logado ──
+    localStorage.setItem('sloward-auth', JSON.stringify({
+      email: cred.user.email,
+      name: name
+    }));
     await setDoc(doc(db, 'clientes', cred.user.uid), {
       nome: name,
       email: email,

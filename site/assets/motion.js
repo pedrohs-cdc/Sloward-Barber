@@ -402,6 +402,7 @@
       else if (e.key === 'ArrowRight') show(currentIdx + 1);
     });
   }
+
   // ── Auth state in nav ───────────────────────────────────────────────────
   (function authNav() {
     let auth = null;
@@ -469,10 +470,26 @@
       el.addEventListener('mouseenter', () => { el.style.background = 'rgba(59,130,246,0.12)'; el.style.color = 'var(--blue-bright)'; });
       el.addEventListener('mouseleave', () => { el.style.background = ''; el.style.color = ''; });
     });
-    // Logout
-    wrap.querySelector('[data-logout]').addEventListener('click', () => {
+
+    // ── Logout: encerra sessão no Firebase e limpa localStorage ──────────
+    wrap.querySelector('[data-logout]').addEventListener('click', async () => {
+      try {
+        const { getApps, initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+        const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+        const apps = getApps();
+        const firebaseApp = apps.length
+          ? apps[0]
+          : initializeApp({
+              apiKey: 'AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is',
+              authDomain: 'sloward-barbershop.firebaseapp.com',
+              projectId: 'sloward-barbershop'
+            });
+        await signOut(getAuth(firebaseApp));
+      } catch (e) {
+        // Silencioso — mesmo que o signOut falhe, limpamos o localStorage
+      }
       localStorage.removeItem('sloward-auth');
-      window.location.reload();
+      window.location.href = 'index.html';
     });
   })();
 })();
