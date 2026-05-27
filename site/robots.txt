@@ -1,0 +1,10 @@
+# Sloward Barbershop — robots.txt
+# https://sloward.com.br
+
+User-agent: *
+Allow: /
+Disallow: /login.html
+Disallow: /agendar.html
+Disallow: /404.html
+
+Sitemap: https://sloward.com.br/sitemap.xml

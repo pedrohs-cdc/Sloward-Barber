@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+*.sublime-*
+
+# Logs / temporários
+*.log
+.cache/
+tmp/
+
+# Dependências (caso o projeto cresça)
+node_modules/
