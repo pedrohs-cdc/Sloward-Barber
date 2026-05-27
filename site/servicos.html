@@ -1,366 +1,72 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Serviços — Sloward Barbershop</title>
-  <meta name="description"
-    content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
+  <meta name="description" content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
   <meta name="keywords" content="barbearia, barbershop, corte masculino, barba, Franca SP, degradê, Sloward">
   <meta name="author" content="Sloward Barbershop">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Serviços — Sloward Barbershop">
-  <meta property="og:description"
-    content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
+  <meta property="og:description" content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Sloward Barbershop">
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Serviços — Sloward Barbershop">
-  <meta name="twitter:description"
-    content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
+  <meta name="twitter:description" content="Confira os serviços da Sloward: corte clássico, degradê, barba navalha, combo, tratamento capilar e experiência VIP. A partir de R$ 55.">
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BarberShop",
-  "name": "Sloward Barbershop",
-  "url": "https://sloward.com.br",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Av. Dr. Armando Sales Oliveira, 201",
-    "addressLocality": "Franca",
-    "addressRegion": "SP",
-    "postalCode": "14404-600",
-    "addressCountry": "BR"
-  },
-  "telephone": "+5516920000060",
-  "priceRange": "R$ 55 - R$ 150"
-}
-</script>
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
+{"@context":"https://schema.org","@type":"BarberShop","name":"Sloward Barbershop","url":"https://sloward.com.br","address":{"@type":"PostalAddress","streetAddress":"Av. Dr. Armando Sales Oliveira, 201","addressLocality":"Franca","addressRegion":"SP","postalCode":"14404-600","addressCountry":"BR"},"telephone":"+5516920000060","priceRange":"R$ 55 - R$ 150"}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
   <style>
-    .page-hero {
-      padding: calc(var(--nav-h) + 96px) 0 64px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .page-hero__row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
-
-    .svc-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 64px;
-      min-height: 300px;
-    }
-
-    @media (max-width: 920px) {
-      .svc-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 580px) {
-      .svc-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .svc-card {
-      background: var(--bg-2);
-      border: 1px solid var(--stroke-soft);
-      border-radius: 16px;
-      padding: 36px 32px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 360ms var(--ease-out), border-color 360ms ease, background 360ms ease;
-    }
-
-    .svc-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--stroke-hot);
-      background: linear-gradient(180deg, var(--bg-2), var(--accent-bg));
-    }
-
-    .svc-card__top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-
-    .svc-card__num {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--ink-mute);
-      letter-spacing: 0.08em;
-    }
-
-    .svc-card__name {
-      font-family: var(--display);
-      font-size: 30px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin: 0;
-      color: var(--ink);
-    }
-
-    .svc-card__desc {
-      font-family: var(--display);
-      font-size: 16px;
-      line-height: 1.55;
-      color: var(--ink-mute);
-      margin: 0;
-      flex: 1;
-    }
-
-    .svc-card__price-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid var(--stroke-soft);
-    }
-
-    .svc-card__price {
-      font-family: var(--display);
-      font-size: 36px;
-      color: var(--blue-bright);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .svc-card__time {
-      font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: var(--ink-mute);
-      text-transform: uppercase;
-    }
-
-    .svc-card--vip {
-      background: linear-gradient(180deg, var(--accent-bg) 0%, var(--bg-2) 100%);
-      border-color: var(--stroke-hot);
-    }
-
-    .svc-card--vip::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
-    }
-
-    .svc-card--vip .svc-card__num {
-      color: var(--blue-bright);
-    }
-
-    .pricing {
-      margin-top: 32px;
-      border-radius: 16px;
-      background: var(--bg-2);
-      border: 1px solid var(--stroke-soft);
-      overflow: hidden;
-      min-height: 200px;
-    }
-
-    .pricing__head {
-      display: grid;
-      grid-template-columns: 0.3fr 2fr 1fr 1fr;
-      padding: 18px 32px;
-      background: var(--bg-3);
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--blue-bright);
-      border-bottom: 1px solid var(--stroke-soft);
-    }
-
-    .pricing__row {
-      display: grid;
-      grid-template-columns: 0.3fr 2fr 1fr 1fr;
-      padding: 24px 32px;
-      align-items: center;
-      border-bottom: 1px solid var(--stroke-soft);
-      transition: background 240ms ease;
-    }
-
-    .pricing__row:hover {
-      background: rgba(59, 130, 246, 0.04);
-    }
-
-    .pricing__row:last-child {
-      border-bottom: 0;
-    }
-
-    .pricing__num {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--ink-faint);
-    }
-
-    .pricing__name {
-      font-family: var(--display);
-      font-size: 24px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    .pricing__time {
-      font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: var(--ink-mute);
-      text-transform: uppercase;
-    }
-
-    .pricing__price {
-      font-family: var(--display);
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--blue-bright);
-      text-align: right;
-      letter-spacing: -0.02em;
-    }
-
-    .pricing__row--vip {
-      background: linear-gradient(90deg, rgba(37, 99, 235, 0.08), transparent);
-    }
-
-    .pricing__row--vip:hover {
-      background: linear-gradient(90deg, rgba(37, 99, 235, 0.14), transparent);
-    }
-
-    .pricing__row--vip .pricing__num {
-      color: var(--blue-bright);
-    }
-
-    .pricing__row--vip .pricing__price {
-      font-size: 32px;
-    }
-
-    .pricing__badge {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--blue-bright);
-      border: 1px solid var(--stroke-hot);
-      background: rgba(59, 130, 246, 0.08);
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-left: 16px;
-      vertical-align: middle;
-    }
-
-    @media (max-width: 740px) {
-
-      .pricing__head,
-      .pricing__row {
-        grid-template-columns: 1.6fr 1fr;
-        padding: 18px 20px;
-      }
-
-      .pricing__head .col-time,
-      .pricing__head .col-num,
-      .pricing__row .pricing__num,
-      .pricing__row .pricing__time {
-        display: none;
-      }
-
-      .pricing__name {
-        font-size: 18px;
-      }
-
-      .pricing__price {
-        font-size: 22px;
-      }
-
-      .pricing__row--vip .pricing__price {
-        font-size: 24px;
-      }
-    }
-
-    .cta-banner {
-      margin-top: 80px;
-      padding: 64px 48px;
-      background: linear-gradient(135deg, var(--bg-2), var(--accent-bg));
-      border-radius: 24px;
-      border: 1px solid var(--stroke-hot);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 32px;
-      flex-wrap: wrap;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.18), transparent 60%);
-    }
-
-    .cta-banner>* {
-      position: relative;
-      z-index: 2;
-    }
-
-    .loading-placeholder {
-      color: var(--ink-mute);
-      font-family: var(--mono);
-      font-size: 14px;
-      padding: 48px;
-      text-align: center;
-    }
-
-    /* Icon boxes */
-    .icon-box {
-      width: 44px;
-      height: 44px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid var(--stroke-hot);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--blue-bright);
-    }
-
-    .icon-box svg {
-      width: 20px;
-      height: 20px;
-    }
+    .page-hero { padding: calc(var(--nav-h) + 96px) 0 64px; position: relative; overflow: hidden; }
+    .page-hero__row { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 64px; min-height: 300px; }
+    @media (max-width: 920px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .svc-grid { grid-template-columns: 1fr; } }
+    .svc-card { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 36px 32px 32px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden; transition: transform 360ms var(--ease-out), border-color 360ms ease, background 360ms ease; }
+    .svc-card:hover { transform: translateY(-6px); border-color: var(--stroke-hot); background: linear-gradient(180deg, var(--bg-2), var(--accent-bg)); }
+    .svc-card__top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .svc-card__num { font-family: var(--mono); font-size: 13px; color: var(--ink-mute); letter-spacing: 0.08em; }
+    .svc-card__name { font-family: var(--display); font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin: 0; color: var(--ink); }
+    .svc-card__desc { font-family: var(--display); font-size: 16px; line-height: 1.55; color: var(--ink-mute); margin: 0; flex: 1; }
+    .svc-card__price-row { display: flex; align-items: baseline; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--stroke-soft); }
+    .svc-card__price { font-family: var(--display); font-size: 36px; color: var(--blue-bright); font-weight: 700; letter-spacing: -0.02em; }
+    .svc-card__time { font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; color: var(--ink-mute); text-transform: uppercase; }
+    .svc-card--vip { background: linear-gradient(180deg, var(--accent-bg) 0%, var(--bg-2) 100%); border-color: var(--stroke-hot); }
+    .svc-card--vip::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blue-bright), transparent); }
+    .svc-card--vip .svc-card__num { color: var(--blue-bright); }
+    .pricing { margin-top: 32px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--stroke-soft); overflow: hidden; min-height: 200px; }
+    .pricing__head { display: grid; grid-template-columns: 0.3fr 2fr 1fr 1fr; padding: 18px 32px; background: var(--bg-3); font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-bright); border-bottom: 1px solid var(--stroke-soft); }
+    .pricing__row { display: grid; grid-template-columns: 0.3fr 2fr 1fr 1fr; padding: 24px 32px; align-items: center; border-bottom: 1px solid var(--stroke-soft); transition: background 240ms ease; }
+    .pricing__row:hover { background: rgba(59,130,246,0.04); }
+    .pricing__row:last-child { border-bottom: 0; }
+    .pricing__num { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+    .pricing__name { font-family: var(--display); font-size: 24px; font-weight: 500; letter-spacing: -0.02em; }
+    .pricing__time { font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; color: var(--ink-mute); text-transform: uppercase; }
+    .pricing__price { font-family: var(--display); font-size: 28px; font-weight: 700; color: var(--blue-bright); text-align: right; letter-spacing: -0.02em; }
+    .pricing__row--vip { background: linear-gradient(90deg, rgba(37,99,235,0.08), transparent); }
+    .pricing__row--vip:hover { background: linear-gradient(90deg, rgba(37,99,235,0.14), transparent); }
+    .pricing__row--vip .pricing__num { color: var(--blue-bright); }
+    .pricing__row--vip .pricing__price { font-size: 32px; }
+    .pricing__badge { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-bright); border: 1px solid var(--stroke-hot); background: rgba(59,130,246,0.08); padding: 4px 8px; border-radius: 4px; margin-left: 16px; vertical-align: middle; }
+    @media (max-width: 740px) { .pricing__head, .pricing__row { grid-template-columns: 1.6fr 1fr; padding: 18px 20px; } .pricing__head .col-time, .pricing__head .col-num, .pricing__row .pricing__num, .pricing__row .pricing__time { display: none; } .pricing__name { font-size: 18px; } .pricing__price { font-size: 22px; } .pricing__row--vip .pricing__price { font-size: 24px; } }
+    .cta-banner { margin-top: 80px; padding: 64px 48px; background: linear-gradient(135deg, var(--bg-2), var(--accent-bg)); border-radius: 24px; border: 1px solid var(--stroke-hot); display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; position: relative; overflow: hidden; }
+    .cta-banner::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 80% 50%, rgba(59,130,246,0.18), transparent 60%); }
+    .cta-banner > * { position: relative; z-index: 2; }
+    .loading-placeholder { color: var(--ink-mute); font-family: var(--mono); font-size: 14px; padding: 48px; text-align: center; }
+    .icon-box { width: 44px; height: 44px; background: rgba(59,130,246,0.1); border: 1px solid var(--stroke-hot); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--blue-bright); }
+    .icon-box svg { width: 20px; height: 20px; }
   </style>
 </head>
-
 <body>
-
   <div class="scroll-progress"></div>
-
   <nav class="nav">
     <div class="container">
       <a href="index.html" class="nav__brand"><span class="dot"></span>SLOWARD</a>
@@ -374,29 +80,15 @@
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
         <button class="search-trigger" data-search-open aria-label="Buscar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span>buscar serviços...</span>
           <span class="kbd"><span>⌘</span><span>K</span></span>
         </button>
         <button class="icon-btn" data-theme-toggle aria-label="Alternar tema">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4" />
-            <path
-              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         </button>
         <a href="login.html" class="icon-btn" aria-label="Entrar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-            <polyline points="10 17 15 12 10 7" />
-            <line x1="15" y1="12" x2="3" y2="12" />
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         </a>
         <a href="agendar.html" class="nav__cta">agendar <span class="arrow">→</span></a>
         <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -420,15 +112,12 @@
     <div class="container">
       <div class="chip reveal"><span class="dot"></span>// 04 · NOSSOS SERVIÇOS</div>
       <div class="page-hero__row" style="margin-top:24px;">
-        <h1 class="h1 reveal" data-delay="1">nossos serviços.<br /><span class="accent">um padrão.</span></h1>
-        <p class="lead reveal" data-delay="2" style="max-width:480px;">
-          Do corte clássico à experiência VIP — cada serviço é pensado pra entregar resultado de verdade.
-        </p>
+        <h1 class="h1 reveal" data-delay="1">nossos serviços.<br/><span class="accent">um padrão.</span></h1>
+        <p class="lead reveal" data-delay="2" style="max-width:480px;">Do corte clássico à experiência VIP — cada serviço é pensado pra entregar resultado de verdade.</p>
       </div>
     </div>
   </section>
 
-  <!-- SERVICES GRID (dinâmico) -->
   <section class="section" style="padding-top: 32px;">
     <div class="container">
       <div class="svc-grid" id="svc-grid">
@@ -437,7 +126,6 @@
     </div>
   </section>
 
-  <!-- PRICING TABLE (dinâmica) -->
   <section class="section" style="background:var(--bg-soft); padding: 80px 0;">
     <div class="container">
       <div class="reveal">
@@ -451,9 +139,7 @@
           <div class="col-time">duração</div>
           <div style="text-align:right;">valor</div>
         </div>
-        <div id="pricing-rows">
-          <div class="loading-placeholder">Carregando...</div>
-        </div>
+        <div id="pricing-rows"><div class="loading-placeholder">Carregando...</div></div>
       </div>
       <div class="cta-banner reveal">
         <div>
@@ -470,68 +156,18 @@
     <div class="container">
       <div class="footer__grid">
         <div class="footer__brand">
-          <h3><span
-              style="display:inline-block; width:10px; height:10px; background:var(--blue-bright); border-radius:2px; margin-right:10px; vertical-align:middle; box-shadow:0 0 12px var(--blue-bright);"></span>SLOWARD
-          </h3>
+          <h3><span style="display:inline-block; width:10px; height:10px; background:var(--blue-bright); border-radius:2px; margin-right:10px; vertical-align:middle; box-shadow:0 0 12px var(--blue-bright);"></span>SLOWARD</h3>
           <p>A arte do corte perfeito. Tradição, estilo e excelência em cada detalhe.</p>
           <div class="socials">
-            <a class="social-link" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
-                stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
-            </a>
-            <a class="social-link" href="https://wa.me/5516920000060" target="_blank" rel="noopener"
-              aria-label="WhatsApp">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z" />
-              </svg>
-            </a>
-            <a class="social-link" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.07A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1Z" />
-              </svg>
-            </a>
-            <a class="social-link" href="mailto:contato@sloward.com.br" aria-label="Email">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-            </a>
+            <a class="social-link" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+            <a class="social-link" href="https://wa.me/5516920000060" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z"/></svg></a>
+            <a class="social-link" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.07A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1Z"/></svg></a>
+            <a class="social-link" href="mailto:contato@sloward.com.br" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
           </div>
         </div>
-        <div class="footer__col">
-          <h4>navegação</h4>
-          <ul>
-            <li><a href="index.html">início</a></li>
-            <li><a href="servicos.html">serviços</a></li>
-            <li><a href="equipe.html">equipe</a></li>
-            <li><a href="galeria.html">galeria</a></li>
-            <li><a href="localizacao.html">localização</a></li>
-            <li><a href="blog.html">blog</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>contato</h4>
-          <ul>
-            <li><a href="https://wa.me/5516920000060">(16) 92000-0060</a></li>
-            <li><a href="mailto:contato@sloward.com.br">contato@sloward.com.br</a></li>
-            <li><a href="localizacao.html">Franca · SP</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>horário</h4>
-          <ul>
-            <li>Seg — Sex · 9h às 20h</li>
-            <li>Sábado · 9h às 14h</li>
-            <li style="color:var(--ink-faint);">Domingo · fechado</li>
-          </ul>
-        </div>
+        <div class="footer__col"><h4>navegação</h4><ul><li><a href="index.html">início</a></li><li><a href="servicos.html">serviços</a></li><li><a href="equipe.html">equipe</a></li><li><a href="galeria.html">galeria</a></li><li><a href="localizacao.html">localização</a></li><li><a href="blog.html">blog</a></li></ul></div>
+        <div class="footer__col"><h4>contato</h4><ul><li><a href="https://wa.me/5516920000060">(16) 92000-0060</a></li><li><a href="mailto:contato@sloward.com.br">contato@sloward.com.br</a></li><li><a href="localizacao.html">Franca · SP</a></li></ul></div>
+        <div class="footer__col"><h4>horário</h4><ul><li>Seg — Sex · 9h às 20h</li><li>Sábado · 9h às 14h</li><li style="color:var(--ink-faint);">Domingo · fechado</li></ul></div>
       </div>
       <div class="footer__bottom">
         <div>© 2026 Sloward Barbershop · Todos os direitos reservados</div>
@@ -543,11 +179,7 @@
   <div class="search-backdrop" role="dialog" aria-modal="true" aria-label="Busca">
     <div class="search-dialog">
       <div class="search-input-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-          stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="buscar serviços, equipe, páginas..." autocomplete="off" />
         <span class="esc" data-search-close>ESC</span>
       </div>
@@ -556,23 +188,27 @@
   </div>
 
   <a href="https://wa.me/5516920000060" class="fab-whats" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-      <path
-        d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z" />
-    </svg>
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z"/></svg>
   </a>
 
   <button class="fab-top" aria-label="Voltar ao topo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-      stroke-linejoin="round">
-      <polyline points="18 15 12 9 6 15" />
-    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
 
   <script src="assets/motion.js"></script>
   <script type="module">
-    const PROJECT = 'sloward-barbershop';
-    const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/servicos`;
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
+      authDomain: "sloward-barbershop.firebaseapp.com",
+      projectId: "sloward-barbershop",
+      storageBucket: "sloward-barbershop.firebasestorage.app",
+      messagingSenderId: "357437108740",
+      appId: "1:357437108740:web:ce61f750671c15b792fb51"
+    });
+    const db = getFirestore(app);
 
     const ICONS = {
       default: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>`,
@@ -593,30 +229,15 @@
       return ICONS.default;
     }
 
-    function fromFirestore(doc) {
-      const id = doc.name.split('/').pop();
-      const f = doc.fields || {};
-      return {
-        id,
-        nome: f.nome?.stringValue || '',
-        descricao: f.descricao?.stringValue || '',
-        preco: Number(f.preco?.integerValue || f.preco?.doubleValue || 0),
-        duracao: f.duracao?.stringValue || '',
-        ordem: Number(f.ordem?.integerValue || 99),
-        ativo: f.ativo?.booleanValue !== false,
-      };
-    }
-
     async function loadServicos() {
       try {
-        const res = await fetch(BASE);
-        const json = await res.json();
-        if (!res.ok || !json.documents) return;
-
-        const docs = json.documents
-          .map(fromFirestore)
-          .filter(s => s.ativo)
-          .sort((a, b) => a.ordem - b.ordem);
+        const snap = await getDocs(collection(db, 'servicos'));
+        const docs = [];
+        snap.forEach(d => {
+          const s = d.data();
+          if (s.ativo) docs.push({ id: d.id, ...s });
+        });
+        docs.sort((a, b) => a.ordem - b.ordem);
 
         // Grid
         const grid = document.getElementById('svc-grid');
@@ -624,34 +245,33 @@
         docs.forEach((s, i) => {
           const isVip = s.nome.toLowerCase().includes('vip');
           const card = document.createElement('div');
-          card.className = `svc-card${isVip ? ' svc-card--vip' : ''} reveal`;
-          card.setAttribute('data-delay', String((i % 3) + 1));
+          card.className = `svc-card${isVip ? ' svc-card--vip' : ''}`;
           card.innerHTML = `
-          <div class="svc-card__top">
-            <div class="icon-box">${getIcon(s.nome)}</div>
-            <div class="svc-card__num">// ${String(s.ordem).padStart(2, '0')}${isVip ? ' · VIP' : ''}</div>
-          </div>
-          <h3 class="svc-card__name">${s.nome}</h3>
-          <p class="svc-card__desc">${s.descricao}</p>
-          <div class="svc-card__price-row">
-            <span class="svc-card__price">R$ ${s.preco}</span>
-            <span class="svc-card__time">${s.duracao}</span>
-          </div>`;
+            <div class="svc-card__top">
+              <div class="icon-box">${getIcon(s.nome)}</div>
+              <div class="svc-card__num">// ${String(s.ordem).padStart(2, '0')}${isVip ? ' · VIP' : ''}</div>
+            </div>
+            <h3 class="svc-card__name">${s.nome}</h3>
+            <p class="svc-card__desc">${s.descricao}</p>
+            <div class="svc-card__price-row">
+              <span class="svc-card__price">R$ ${s.preco}</span>
+              <span class="svc-card__time">${s.duracao}</span>
+            </div>`;
           grid.appendChild(card);
         });
 
         // Pricing table
         const rows = document.getElementById('pricing-rows');
         rows.innerHTML = '';
-        docs.forEach((s, i) => {
+        docs.forEach(s => {
           const isVip = s.nome.toLowerCase().includes('vip');
           const row = document.createElement('div');
           row.className = `pricing__row${isVip ? ' pricing__row--vip' : ''}`;
           row.innerHTML = `
-          <div class="pricing__num">${String(s.ordem).padStart(2, '0')}</div>
-          <div class="pricing__name">${s.nome}${isVip ? '<span class="pricing__badge">premium</span>' : ''}</div>
-          <div class="pricing__time">${s.duracao.toUpperCase()}</div>
-          <div class="pricing__price">R$ ${s.preco}</div>`;
+            <div class="pricing__num">${String(s.ordem).padStart(2, '0')}</div>
+            <div class="pricing__name">${s.nome}${isVip ? '<span class="pricing__badge">premium</span>' : ''}</div>
+            <div class="pricing__time">${s.duracao.toUpperCase()}</div>
+            <div class="pricing__price">R$ ${s.preco}</div>`;
           rows.appendChild(row);
         });
 
@@ -667,5 +287,4 @@
     loadServicos();
   </script>
 </body>
-
 </html>
