@@ -379,7 +379,7 @@
     async function loadServices() {
       console.log('loadServices chamado');
       try {
-        const q = query(collection(db, 'servicos'), orderBy('ordem'));
+        const q = query(collection(db, 'servicos'));
         const snap = await getDocs(q);
         const list = document.getElementById('services-list');
         list.innerHTML = '';
