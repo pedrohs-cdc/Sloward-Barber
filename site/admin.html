@@ -381,6 +381,7 @@
       try {
         const q = query(collection(db, 'servicos'));
         const snap = await getDocs(q);
+        console.log('docs encontrados:', snap.size);
         const list = document.getElementById('services-list');
         list.innerHTML = '';
         snap.forEach(docSnap => {
