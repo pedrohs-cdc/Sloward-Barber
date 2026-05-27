@@ -1,13 +1,12 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/site/admin.html" },
-    { "source": "/login", "destination": "/site/login.html" },
-    { "source": "/servicos", "destination": "/site/servicos.html" },
-    { "source": "/equipe", "destination": "/site/equipe.html" },
-    { "source": "/galeria", "destination": "/site/galeria.html" },
-    { "source": "/agendar", "destination": "/site/agendar.html" },
-    { "source": "/localizacao", "destination": "/site/localizacao.html" },
-    { "source": "/blog", "destination": "/site/blog.html" },
-    { "source": "/", "destination": "/site/index.html" }
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/servicos", "destination": "/servicos.html" },
+    { "source": "/equipe", "destination": "/equipe.html" },
+    { "source": "/galeria", "destination": "/galeria.html" },
+    { "source": "/agendar", "destination": "/agendar.html" },
+    { "source": "/localizacao", "destination": "/localizacao.html" },
+    { "source": "/blog", "destination": "/blog.html" }
   ]
 }
