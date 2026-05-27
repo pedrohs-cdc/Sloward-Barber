@@ -787,42 +787,35 @@
 
   <script src="assets/motion.js"></script>
   <script type="module">
-    const BASE = 'https://firestore.googleapis.com/v1/projects/sloward-barbershop/databases/(default)/documents/servicos';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    function fromFirestore(doc) {
-      const f = doc.fields || {};
-      return {
-        id: doc.name.split('/').pop(),
-        nome: f.nome?.stringValue || '',
-        descricao: f.descricao?.stringValue || '',
-        preco: Number(f.preco?.integerValue || f.preco?.doubleValue || 0),
-        duracao: f.duracao?.stringValue || '',
-        ordem: Number(f.ordem?.integerValue || 99),
-        ativo: f.ativo?.booleanValue !== false,
-      };
-    }
+    const app = initializeApp({
+      apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
+      authDomain: "sloward-barbershop.firebaseapp.com",
+      projectId: "sloward-barbershop",
+      storageBucket: "sloward-barbershop.firebasestorage.app",
+      messagingSenderId: "357437108740",
+      appId: "1:357437108740:web:ce61f750671c15b792fb51"
+    });
+    const db = getFirestore(app);
 
     async function loadPreview() {
       try {
-        const res = await fetch(BASE);
-        const json = await res.json();
-        if (!res.ok || !json.documents) return;
+        const snap = await getDocs(collection(db, 'servicos'));
+        const docs = [];
+        snap.forEach(d => {
+          const s = d.data();
+          if (s.ativo) docs.push({ id: d.id, ...s });
+        });
+        docs.sort((a, b) => a.ordem - b.ordem);
 
-        const docs = json.documents
-          .map(fromFirestore)
-          .filter(s => s.ativo)
-          .sort((a, b) => a.ordem - b.ordem)
-          .slice(0, 3);
+        const numEl = document.getElementById('hero-num-servicos');
+        if (numEl) numEl.textContent = String(docs.length).padStart(2, '0');
 
         const container = document.getElementById('preview-services');
         container.innerHTML = '';
-
-        // atualiza contador do hero
-        const total = json.documents.map(fromFirestore).filter(s => s.ativo).length;
-        const numEl = document.getElementById('hero-num-servicos');
-        if (numEl) numEl.textContent = String(total).padStart(2, '0');
-
-        docs.forEach((s, i) => {
+        docs.slice(0, 3).forEach((s, i) => {
           const card = document.createElement('a');
           card.href = 'servicos.html';
           card.className = 'svc-mini reveal';
@@ -838,7 +831,7 @@
           container.appendChild(card);
         });
       } catch (err) {
-        console.error('Erro ao carregar preview:', err);
+        console.error('Erro:', err);
       }
     }
 
