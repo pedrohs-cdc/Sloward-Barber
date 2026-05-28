@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minha Conta — Sloward Barbershop</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .conta-wrap { min-height: 100vh; padding: calc(var(--nav-h) + 64px) 0 80px; }
+    .conta-header { display: flex; align-items: center; gap: 24px; margin-bottom: 56px; }
+    .conta-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--blue-bright)); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 28px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .conta-info h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+    .conta-info p { font-family: var(--mono); font-size: 13px; color: var(--ink-mute); margin: 0; }
+    .conta-tabs { display: flex; gap: 8px; margin-bottom: 40px; background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 12px; padding: 4px; width: fit-content; }
+    .conta-tab { padding: 10px 24px; border-radius: 8px; border: none; background: transparent; font-family: var(--mono); font-size: 13px; color: var(--ink-mute); cursor: pointer; transition: all 220ms; }
+    .conta-tab.active { background: var(--blue); color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .agenda-list { display: flex; flex-direction: column; gap: 16px; }
+    .agenda-card { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 24px 28px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; transition: all 240ms; }
+    .agenda-card:hover { border-color: var(--stroke-hot); }
+    .agenda-card.passado { opacity: 0.5; }
+    .agenda-card.cancelado { opacity: 0.35; }
+    .agenda-data { text-align: center; min-width: 56px; }
+    .agenda-data__dia { font-family: var(--display); font-size: 32px; font-weight: 700; color: var(--blue-bright); line-height: 1; letter-spacing: -0.03em; }
+    .agenda-data__mes { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+    .agenda-info h3 { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
+    .agenda-info p { font-family: var(--mono); font-size: 13px; color: var(--ink-mute); margin: 0; }
+    .agenda-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .status-badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 6px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .status-badge.cancelado { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.3); }
+    .status-badge.passado { background: rgba(100,116,139,0.1); color: var(--ink-mute); border-color: var(--stroke-soft); }
+    .cancel-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(239,68,68,0.4); background: transparent; color: #ef4444; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: all 220ms; }
+    .cancel-btn:hover { background: rgba(239,68,68,0.1); }
+    .empty-state { text-align: center; padding: 80px 40px; color: var(--ink-mute); font-family: var(--mono); font-size: 14px; background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 16px; }
+    .empty-state a { color: var(--blue-bright); text-decoration: none; }
+    .perfil-card { background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 20px; max-width: 480px; }
+    .perfil-field { display: flex; flex-direction: column; gap: 6px; }
+    .perfil-field label { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.08em; }
+    .perfil-field span { font-size: 16px; color: var(--ink); }
+    .logout-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.4); background: transparent; color: #ef4444; font-family: var(--mono); font-size: 14px; cursor: pointer; transition: all 220ms; width: fit-content; }
+    .logout-btn:hover { background: rgba(239,68,68,0.1); }
+    @media (max-width: 580px) { .agenda-card { grid-template-columns: auto 1fr; } .agenda-right { grid-column: 2; flex-direction: row; align-items: center; } }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav__brand"><span class="dot"></span>SLOWARD</a>
+      <div class="nav__menu">
+        <a href="/">inicio</a>
+        <a href="/servicos">servicos</a>
+        <a href="/equipe">equipe</a>
+        <a href="/galeria">galeria</a>
+        <a href="/localizacao">local</a>
+        <a href="/blog">blog</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="/agendar" class="nav__cta">agendar <span class="arrow">→</span></a>
+        <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile">
+      <a href="/">inicio</a>
+      <a href="/servicos">servicos</a>
+      <a href="/equipe">equipe</a>
+      <a href="/galeria">galeria</a>
+      <a href="/localizacao">local</a>
+      <a href="/blog">blog</a>
+      <a href="/agendar">agendar →</a>
+    </div>
+  </nav>
+
+  <div class="conta-wrap" id="conta-wrap" style="display:none;">
+    <div class="container">
+      <div class="conta-header">
+        <div class="conta-avatar" id="avatar-letra">?</div>
+        <div class="conta-info">
+          <h1 id="user-nome">Carregando...</h1>
+          <p id="user-email"></p>
+        </div>
+      </div>
+
+      <div class="conta-tabs">
+        <button class="conta-tab active" onclick="switchTab('proximos')">// próximos</button>
+        <button class="conta-tab" onclick="switchTab('historico')">// histórico</button>
+        <button class="conta-tab" onclick="switchTab('perfil')">// perfil</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-proximos">
+        <div class="agenda-list" id="list-proximos">
+          <div class="empty-state">carregando...</div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-historico">
+        <div class="agenda-list" id="list-historico">
+          <div class="empty-state">carregando...</div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-perfil">
+        <div class="perfil-card">
+          <div class="perfil-field">
+            <label>nome</label>
+            <span id="perfil-nome">—</span>
+          </div>
+          <div class="perfil-field">
+            <label>e-mail</label>
+            <span id="perfil-email">—</span>
+          </div>
+          <div class="perfil-field">
+            <label>membro desde</label>
+            <span id="perfil-desde">—</span>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            sair da conta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading-screen" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div style="font-family:var(--mono); font-size:14px; color:var(--ink-mute);">// carregando...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
+      authDomain: "sloward-barbershop.firebaseapp.com",
+      projectId: "sloward-barbershop",
+      storageBucket: "sloward-barbershop.firebasestorage.app",
+      messagingSenderId: "357437108740",
+      appId: "1:357437108740:web:ce61f750671c15b792fb51"
+    });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+    onAuthStateChanged(auth, async user => {
+      document.getElementById('loading-screen').style.display = 'none';
+      if (!user) {
+        window.location.href = '/login';
+        return;
+      }
+
+      document.getElementById('conta-wrap').style.display = 'block';
+
+      const nome = user.displayName || user.email.split('@')[0];
+      const letra = nome.charAt(0).toUpperCase();
+
+      document.getElementById('avatar-letra').textContent = letra;
+      document.getElementById('user-nome').textContent = nome;
+      document.getElementById('user-email').textContent = user.email;
+      document.getElementById('perfil-nome').textContent = user.displayName || '—';
+      document.getElementById('perfil-email').textContent = user.email;
+
+      const criado = user.metadata.creationTime;
+      if (criado) {
+        const d = new Date(criado);
+        document.getElementById('perfil-desde').textContent = `${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+      }
+
+      await loadAgendamentos(user.uid);
+    });
+
+    async function loadAgendamentos(uid) {
+      try {
+        const q = query(collection(db, 'agendamentos'), where('clienteId', '==', uid));
+        const snap = await getDocs(q);
+        const todos = [];
+        snap.forEach(d => todos.push({ id: d.id, ...d.data() }));
+
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        const proximos = todos.filter(a => {
+          const [y, m, d] = a.data.split('-');
+          const dataAgend = new Date(y, m - 1, d);
+          return dataAgend >= hoje && a.status !== 'cancelado';
+        }).sort((a, b) => a.data.localeCompare(b.data));
+
+        const historico = todos.filter(a => {
+          const [y, m, d] = a.data.split('-');
+          const dataAgend = new Date(y, m - 1, d);
+          return dataAgend < hoje || a.status === 'cancelado';
+        }).sort((a, b) => b.data.localeCompare(a.data));
+
+        renderList('list-proximos', proximos, true);
+        renderList('list-historico', historico, false);
+      } catch(err) {
+        console.error(err);
+      }
+    }
+
+    function renderList(containerId, items, futuro) {
+      const container = document.getElementById(containerId);
+      if (!items.length) {
+        container.innerHTML = futuro
+          ? '<div class="empty-state">nenhum agendamento futuro · <a href="/agendar">agendar agora →</a></div>'
+          : '<div class="empty-state">nenhum histórico ainda</div>';
+        return;
+      }
+      container.innerHTML = '';
+      items.forEach(a => {
+        const [y, m, d] = a.data.split('-');
+        const hoje = new Date(); hoje.setHours(0,0,0,0);
+        const dataAgend = new Date(y, m - 1, d);
+        const passado = dataAgend < hoje;
+        const cancelado = a.status === 'cancelado';
+        const barbeiroNome = a.barbeiro === 'pedro' ? 'Pedro Sigismundo' : 'André Patric';
+        const servicoNome = a.servicoNome ? a.servicoNome.split('—')[0].trim() : a.servicoId;
+
+        const card = document.createElement('div');
+        card.className = `agenda-card ${cancelado ? 'cancelado' : passado ? 'passado' : ''}`;
+        card.innerHTML = `
+          <div class="agenda-data">
+            <div class="agenda-data__dia">${d}</div>
+            <div class="agenda-data__mes">${MONTHS[parseInt(m)-1]}</div>
+          </div>
+          <div class="agenda-info">
+            <h3>${servicoNome}</h3>
+            <p>// ${barbeiroNome} · ${a.hora} · ${y}</p>
+            ${a.obs ? `<p style="margin-top:4px; color:var(--ink-soft);">${a.obs}</p>` : ''}
+          </div>
+          <div class="agenda-right">
+            <span class="status-badge ${cancelado ? 'cancelado' : passado ? 'passado' : ''}">${cancelado ? 'cancelado' : passado ? 'concluído' : 'confirmado'}</span>
+            ${!cancelado && !passado ? `<button class="cancel-btn" onclick="cancelar('${a.id}')">cancelar</button>` : ''}
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+
+    window.cancelar = async (id) => {
+      if (!confirm('Cancelar este agendamento?')) return;
+      await updateDoc(doc(db, 'agendamentos', id), { status: 'cancelado' });
+      const user = auth.currentUser;
+      if (user) await loadAgendamentos(user.uid);
+    };
+
+    window.logout = async () => {
+      await signOut(auth);
+      window.location.href = '/';
+    };
+
+    window.switchTab = (tab) => {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.conta-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      event.target.classList.add('active');
+    };
+  </script>
+  <script src="assets/motion.js"></script>
+</body>
+</html>

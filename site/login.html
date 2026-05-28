@@ -273,7 +273,7 @@ onAuthStateChanged(auth, user => {
     }
     const params = new URLSearchParams(location.search);
     const next = params.get('next');
-    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
+    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : '/conta';
     window.location.href = safe;
   }
 });
@@ -326,7 +326,7 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
     showToast('login realizado! redirecionando...');
     const params = new URLSearchParams(location.search);
     const next = params.get('next');
-    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : 'index.html';
+    const safe = next && /^[a-z0-9_\-]+\.html$/i.test(next) ? next : '/conta';
     setTimeout(() => { window.location.href = safe; }, 1200);
   } catch(err) {
     window._loggingIn = false;
@@ -360,7 +360,7 @@ document.getElementById('signupForm').addEventListener('submit', async e => {
       criadoEm: new Date().toISOString()
     });
     showToast('conta criada! seja bem-vindo.');
-    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+    setTimeout(() => { window.location.href = '/conta'; }, 1200);
   } catch(err) {
     window._loggingIn = false;
     showError('signup-error', translateError(err.code));
