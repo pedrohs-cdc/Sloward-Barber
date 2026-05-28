@@ -17,6 +17,9 @@
     { "source": "/blog-corte-rosto", "destination": "/blog-corte-rosto.html" },
     { "source": "/blog-navalha", "destination": "/blog-navalha.html" },
     { "source": "/blog-degrade", "destination": "/blog-degrade.html" },
-    { "source": "/blog-rotina-capilar", "destination": "/blog-rotina-capilar.html" }
+    { "source": "/blog-rotina-capilar", "destination": "/blog-rotina-capilar.html" },
+    { "source": "/blog-tesoura-maquina", "destination": "/blog-tesoura-maquina.html" },
+    { "source": "/blog-3-cortes", "destination": "/blog-3-cortes.html" },
+    { "source": "/blog-barbearia-premium", "destination": "/blog-barbearia-premium.html" }
   ]
 }

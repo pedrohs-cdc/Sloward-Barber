@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tesoura vs máquina: quando usar cada uma — Sloward Blog</title>
+  <meta name="description" content="A escolha das ferramentas conta — e por que o melhor corte usa as duas em momentos diferentes.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Tesoura vs máquina — Sloward Blog">
+  <meta property="og:image" content="https://barber.sloward.com/assets/Cortes/Sloward-barber.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://barber.sloward.com/assets/Cortes/Sloward-barber.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .article-wrap { max-width: 740px; margin: 0 auto; padding: calc(var(--nav-h) + 80px) 0 120px; }
+    .article-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; color: var(--ink-mute); text-decoration: none; margin-bottom: 48px; transition: color 220ms; }
+    .article-back:hover { color: var(--blue-bright); }
+    .article-meta { display: flex; gap: 16px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--blue-bright); text-transform: uppercase; margin-bottom: 24px; flex-wrap: wrap; }
+    .article-title { font-family: var(--display); font-size: clamp(36px, 5vw, 64px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin: 0 0 32px; }
+    .article-lead { font-size: 20px; line-height: 1.65; color: var(--ink-soft); margin: 0 0 48px; padding-bottom: 48px; border-bottom: 1px solid var(--stroke-soft); }
+    .article-body h2 { font-family: var(--display); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 48px 0 16px; }
+    .article-body p { font-size: 17px; line-height: 1.75; color: var(--ink-soft); margin: 0 0 24px; }
+    .article-body strong { color: var(--ink); font-weight: 600; }
+    .article-body ul { margin: 0 0 24px; padding-left: 24px; }
+    .article-body ul li { font-size: 17px; line-height: 1.75; color: var(--ink-soft); margin-bottom: 8px; }
+    .tip-box { background: linear-gradient(135deg, var(--bg-2), var(--accent-bg)); border: 1px solid var(--stroke-hot); border-radius: 16px; padding: 28px 32px; margin: 40px 0; }
+    .tip-box__label { font-family: var(--mono); font-size: 12px; color: var(--blue-bright); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .tip-box p { font-size: 16px; line-height: 1.65; color: var(--ink-soft); margin: 0; }
+    .article-cta { margin-top: 64px; padding: 48px; background: linear-gradient(135deg, var(--bg-2), var(--accent-bg)); border: 1px solid var(--stroke-hot); border-radius: 20px; text-align: center; }
+    .article-cta h3 { font-family: var(--display); font-size: 28px; font-weight: 700; margin: 0 0 12px; }
+    .article-cta p { color: var(--ink-mute); margin: 0 0 24px; }
+    .article-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--stroke-soft); flex-wrap: wrap; }
+    .article-nav a { font-family: var(--mono); font-size: 13px; color: var(--blue-bright); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav__brand"><span class="dot"></span>SLOWARD</a>
+      <div class="nav__menu">
+        <a href="/">inicio</a>
+        <a href="/servicos">servicos</a>
+        <a href="/equipe">equipe</a>
+        <a href="/galeria">galeria</a>
+        <a href="/localizacao">local</a>
+        <a href="/blog" class="active">blog</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="/login" class="icon-btn" aria-label="Entrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </a>
+        <a href="/agendar" class="nav__cta">agendar <span class="arrow">→</span></a>
+        <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile">
+      <a href="/">inicio</a><a href="/servicos">servicos</a><a href="/equipe">equipe</a>
+      <a href="/galeria">galeria</a><a href="/localizacao">local</a><a href="/blog">blog</a>
+      <a href="/login">entrar / cadastro</a><a href="/agendar">agendar →</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="article-wrap">
+      <a href="/blog" class="article-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        voltar ao blog
+      </a>
+      <div class="article-meta">
+        <span>// técnica</span><span style="color:var(--ink-faint);">·</span>
+        <span>20 abril · 2026</span><span style="color:var(--ink-faint);">·</span>
+        <span>5 min de leitura</span>
+      </div>
+      <h1 class="article-title">tesoura vs máquina: quando usar cada uma.</h1>
+      <p class="article-lead">A escolha das ferramentas conta — e por que o melhor corte usa as duas em momentos diferentes. O que diferencia um barbeiro técnico de um barbeiro completo.</p>
+      <div class="article-body">
+        <p>Existe um mito no mundo da barbearia: ou você é barbeiro de máquina ou de tesoura. Na prática, os melhores profissionais dominam as duas — e sabem exatamente quando usar cada uma. A ferramenta certa no momento errado entrega o resultado errado.</p>
+
+        <h2>// o que cada ferramenta faz de melhor</h2>
+        <p><strong>A máquina</strong> é precisa, rápida e consistente. É a ferramenta ideal para criar transições graduais (o degradê), definir linhas e trabalhar com volumes uniformes nas laterais e nuca. Com diferentes numerações de pentes, ela controla exatamente o comprimento que vai deixar — do 0 (pele) ao 4 (mais de 1cm).</p>
+        <p><strong>A tesoura</strong> é versátil e delicada. Permite remover peso sem reduzir comprimento, criar textura, trabalhar fios individuais e dar movimento ao cabelo. É indispensável no topo do corte, em cabelos crespos e cacheados, e em qualquer situação que exija precisão milimétrica sem o risco de errar pela pele.</p>
+
+        <h2>// a sequência técnica</h2>
+        <p>Em um corte completo, as duas ferramentas trabalham em sequência — não em substituição. A ordem mais comum é:</p>
+        <ul>
+          <li><strong>Máquina nas laterais:</strong> define o comprimento base e cria a transição do degradê</li>
+          <li><strong>Navalha no acabamento:</strong> limpa as bordas, define a linha do pescoço e das entradas</li>
+          <li><strong>Tesoura no topo:</strong> remove o excesso, cria textura e dá movimento</li>
+          <li><strong>Pente + tesoura:</strong> ajuste final de comprimento e uniformização</li>
+        </ul>
+
+        <div class="tip-box">
+          <div class="tip-box__label">// sinal de alerta</div>
+          <p>Se o barbeiro usar só a máquina do começo ao fim, o resultado vai parecer artificial — sem textura, sem movimento, sem personalidade. A tesoura é o que faz o corte parecer feito para você, não para uma foto.</p>
+        </div>
+
+        <h2>// para cada tipo de cabelo</h2>
+        <p><strong>Cabelo liso e fino:</strong> mais tesoura, menos máquina. Fios finos mostram marcas de máquina facilmente — a tesoura dá resultado mais natural.</p>
+        <p><strong>Cabelo grosso e volumoso:</strong> máquina para controle de volume nas laterais, tesoura para desbaste e texturização no topo.</p>
+        <p><strong>Cabelo crespo e cacheado:</strong> tesoura quase exclusivamente no topo (nunca pente + máquina em cabelo seco crespo), máquina apenas nas laterais para o degradê.</p>
+        <p><strong>Cabelo ondulado:</strong> equilíbrio entre as duas. A onda natural já cria movimento — a tesoura preserva isso, a máquina define a estrutura.</p>
+
+        <h2>// o que perguntar ao barbeiro</h2>
+        <p>Se você quer entender se o barbeiro domina as duas ferramentas, pergunte como ele vai trabalhar o topo. A resposta vai revelar a técnica — e o nível de cuidado que ele vai dedicar ao seu corte.</p>
+      </div>
+      <div class="article-cta">
+        <h3>técnica de verdade na Sloward.</h3>
+        <p>Pedro e André dominam as duas ferramentas. Agende e comprove.</p>
+        <a href="/agendar" class="btn btn--primary">agendar agora <span class="arrow">→</span></a>
+      </div>
+      <div class="article-nav">
+        <a href="/blog-rotina-capilar">← rotina capilar masculina</a>
+        <a href="/blog-3-cortes">3 cortes pra qualquer estilo →</a>
+      </div>
+    </div>
+  </div>
+  <script src="assets/motion.js"></script>
+  <script type="module" src="assets/nav-auth.js"></script>
+</body>
+</html>
