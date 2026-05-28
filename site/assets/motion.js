@@ -353,18 +353,20 @@
       const item = items[currentIdx];
       const title = item.querySelector('.gallery-item__title')?.textContent || '';
       const tag = item.querySelector('.gallery-item__tag')?.textContent || '';
-      const icon = item.querySelector('svg')?.cloneNode(true);
+      const img = item.querySelector('img');
+      const imgClone = img ? img.cloneNode(true) : null;
 
       // Replace lightbox content (keep meta + counter)
-      content.querySelectorAll('svg.lb-art').forEach((n) => n.remove());
-      if (icon) {
-        icon.setAttribute('width', '120');
+      content.querySelectorAll('.lb-art').forEach((n) => n.remove());
+      if (imgClone) {
+        imgClone.removeAttribute('style');
+        imgClone.style.cssText = 'max-width:100%;max-height:80vh;width:auto;height:auto;border-radius:12px;display:block;margin:auto;';
         icon.setAttribute('height', '120');
-        icon.classList.add('lb-art');
-        icon.style.opacity = '0.5';
-        icon.style.position = 'relative';
-        icon.style.zIndex = '1';
-        content.appendChild(icon);
+        imgClone.classList.add('lb-art');
+        
+        
+        
+        content.appendChild(imgClone);
       }
       meta.innerHTML = '<div class="gallery-item__tag">' + tag + '</div><div class="gallery-item__title" style="margin-top:12px;">' + title + '</div>';
       counter.textContent = String(currentIdx + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
