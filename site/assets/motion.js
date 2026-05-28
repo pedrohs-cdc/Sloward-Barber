@@ -361,7 +361,7 @@
       if (imgClone) {
         imgClone.removeAttribute('style');
         imgClone.style.cssText = 'max-width:100%;max-height:80vh;width:auto;height:auto;border-radius:12px;display:block;margin:auto;';
-        icon.setAttribute('height', '120');
+
         imgClone.classList.add('lb-art');
         
         
