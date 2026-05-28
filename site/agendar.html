@@ -451,7 +451,7 @@ document.getElementById('bookForm').addEventListener('submit', async e => {
     // Envia e-mail de confirmação
     const [y, m, d] = data.split('-');
     try {
-      await window.emailjs.send('service_jg9nn2w', '43pbia4', {
+      await window.emailjs.send('service_jg9nn2w', 'template_cynwymj', {
         cliente_nome: currentUser.displayName || currentUser.email.split('@')[0],
         cliente_email: currentUser.email,
         servico: servico.options[servico.selectedIndex].text.split('—')[0].trim(),
