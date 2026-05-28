@@ -8,20 +8,14 @@
 <meta name="keywords" content="barbearia, barbershop, corte masculino, barba, Franca SP, degradê, Sloward">
 <meta name="author" content="Sloward Barbershop">
 <meta name="robots" content="index, follow">
-
-<!-- Open Graph -->
 <meta property="og:title" content="Equipe — Sloward Barbershop">
 <meta property="og:description" content="Pedro Sigismundo e André Patric. Dois barbeiros, técnica refinada e obsessão por entregar o melhor corte.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sloward Barbershop">
 <meta property="og:locale" content="pt_BR">
-
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Equipe — Sloward Barbershop">
 <meta name="twitter:description" content="Pedro Sigismundo e André Patric. Dois barbeiros, técnica refinada e obsessão por entregar o melhor corte.">
-
-<!-- Schema.org -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,8 +41,6 @@
   "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "200" }
 }
 </script>
-
-<!-- Favicon (SVG inline) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +53,6 @@
     overflow: hidden;
   }
 
-  /* Team card big */
   .team-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -83,7 +74,7 @@
   }
 
   .team-card__photo {
-    aspect-ratio: 4/3;
+    aspect-ratio: 3/4;
     border-radius: 16px;
     overflow: hidden;
     position: relative;
@@ -97,11 +88,11 @@
     position: absolute; inset: 0;
     background: radial-gradient(circle at 50% 40%, rgba(59,130,246,0.18), transparent 60%);
   }
-  .team-card__photo svg { color: var(--blue-bright); opacity: 0.5; }
   .team-card__photo .crosshair {
     position: absolute;
     width: 14px;
     height: 14px;
+    z-index: 2;
   }
   .team-card__photo .crosshair::before,
   .team-card__photo .crosshair::after { content: ""; position: absolute; background: var(--blue-bright); }
@@ -167,7 +158,6 @@
     margin-top: 4px;
   }
 
-  /* Values section */
   .values {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -246,8 +236,8 @@
     <a href="index.html">inicio</a>
     <a href="servicos.html">servicos</a>
     <a href="equipe.html">equipe</a>
-      <a href="galeria.html">galeria</a>
-      <a href="localizacao.html">local</a>
+    <a href="galeria.html">galeria</a>
+    <a href="localizacao.html">local</a>
     <a href="blog.html">blog</a>
     <a href="login.html">entrar / cadastro</a>
     <a href="agendar.html">agendar →</a>
@@ -269,17 +259,17 @@
   </div>
 </section>
 
-<!-- ─── TEAM ────────────────────────────────────────────────────────── -->
 <section class="section" style="padding-top: 24px;">
   <div class="container">
     <div class="team-grid">
+
       <article class="team-card reveal" data-delay="1">
         <div class="team-card__photo">
           <span class="crosshair" style="top:12px; left:12px;"></span>
           <span class="crosshair" style="top:12px; right:12px;"></span>
           <span class="crosshair" style="bottom:12px; left:12px;"></span>
           <span class="crosshair" style="bottom:12px; right:12px;"></span>
-          <img src="assets/Cortes/pedro barbeiro.png" alt="Pedro Sigismundo" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy" />
+          <img src="assets/Cortes/pedro barbeiro.png" alt="Pedro Sigismundo" style="width:100%; height:100%; object-fit:cover; object-position: center top; display:block;" loading="lazy" />
         </div>
         <div class="team-card__body">
           <div class="team-card__num">// 01</div>
@@ -312,12 +302,12 @@
 
       <article class="team-card reveal" data-delay="2">
         <div class="team-card__photo">
-  <span class="crosshair" style="top:12px; left:12px;"></span>
-  <span class="crosshair" style="top:12px; right:12px;"></span>
-  <span class="crosshair" style="bottom:12px; left:12px;"></span>
-  <span class="crosshair" style="bottom:12px; right:12px;"></span>
-  <img src="assets/Cortes/andre-barbeiro.png" alt="André Patric" style="width:100%; height:100%; object-fit:cover; object-position: center top; display:block;" loading="lazy" />
-</div>
+          <span class="crosshair" style="top:12px; left:12px;"></span>
+          <span class="crosshair" style="top:12px; right:12px;"></span>
+          <span class="crosshair" style="bottom:12px; left:12px;"></span>
+          <span class="crosshair" style="bottom:12px; right:12px;"></span>
+          <img src="assets/Cortes/andre-barbeiro.png" alt="André Patric" style="width:100%; height:100%; object-fit:cover; object-position: center top; display:block;" loading="lazy" />
+        </div>
         <div class="team-card__body">
           <div class="team-card__num">// 02</div>
           <h2 class="team-card__name">André<br/>Patric</h2>
@@ -346,18 +336,17 @@
           </div>
         </div>
       </article>
+
     </div>
   </div>
 </section>
 
-<!-- ─── VALUES ──────────────────────────────────────────────────────── -->
 <section class="section" style="background:var(--bg-soft); padding:96px 0;">
   <div class="container">
     <div class="reveal">
       <div class="eyebrow">// nosso jeito</div>
       <h2 class="h1" style="margin-top:24px;">o que nos <span class="accent">move.</span></h2>
     </div>
-
     <div class="values">
       <div class="value-card reveal" data-delay="1">
         <div class="value-card__num">01</div>
@@ -378,7 +367,6 @@
   </div>
 </section>
 
-<!-- ─── CTA ─────────────────────────────────────────────────────────── -->
 <section class="section">
   <div class="container">
     <div style="background:linear-gradient(135deg, var(--bg-2), var(--accent-bg)); border:1px solid var(--stroke-hot); border-radius:24px; padding:64px 48px; display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap; position:relative; overflow:hidden;" class="reveal">
@@ -415,33 +403,9 @@
           </a>
         </div>
       </div>
-      <div class="footer__col">
-        <h4>navegação</h4>
-        <ul>
-          <li><a href="index.html">início</a></li>
-          <li><a href="servicos.html">serviços</a></li>
-          <li><a href="equipe.html">equipe</a></li>
-          <li><a href="galeria.html">galeria</a></li>
-          <li><a href="localizacao.html">localização</a></li>
-          <li><a href="blog.html">blog</a></li>
-        </ul>
-      </div>
-      <div class="footer__col">
-        <h4>contato</h4>
-        <ul>
-          <li><a href="https://wa.me/5516920000060">(16) 92000-0060</a></li>
-          <li><a href="mailto:contato@sloward.com.br">contato@sloward.com.br</a></li>
-          <li><a href="localizacao.html">Franca · SP</a></li>
-        </ul>
-      </div>
-      <div class="footer__col">
-        <h4>horário</h4>
-        <ul>
-          <li>Seg — Sex · 9h às 20h</li>
-          <li>Sábado · 9h às 14h</li>
-          <li style="color:var(--ink-faint);">Domingo · fechado</li>
-        </ul>
-      </div>
+      <div class="footer__col"><h4>navegação</h4><ul><li><a href="index.html">início</a></li><li><a href="servicos.html">serviços</a></li><li><a href="equipe.html">equipe</a></li><li><a href="galeria.html">galeria</a></li><li><a href="localizacao.html">localização</a></li><li><a href="blog.html">blog</a></li></ul></div>
+      <div class="footer__col"><h4>contato</h4><ul><li><a href="https://wa.me/5516920000060">(16) 92000-0060</a></li><li><a href="mailto:contato@sloward.com.br">contato@sloward.com.br</a></li><li><a href="localizacao.html">Franca · SP</a></li></ul></div>
+      <div class="footer__col"><h4>horário</h4><ul><li>Seg — Sex · 9h às 20h</li><li>Sábado · 9h às 14h</li><li style="color:var(--ink-faint);">Domingo · fechado</li></ul></div>
     </div>
     <div class="footer__bottom">
       <div>© 2026 Sloward Barbershop · Todos os direitos reservados</div>
@@ -450,7 +414,6 @@
   </div>
 </footer>
 
-<!-- ─── SEARCH DIALOG ─── -->
 <div class="search-backdrop" role="dialog" aria-modal="true" aria-label="Busca">
   <div class="search-dialog">
     <div class="search-input-wrap">
