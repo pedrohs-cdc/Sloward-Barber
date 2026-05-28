@@ -357,14 +357,19 @@ function renderCalendar() {
     if (d.getTime() === today.getTime()) btn.classList.add('today');
     if (selectedDate && d.getTime() === selectedDate.getTime()) btn.classList.add('selected');
     btn.addEventListener('click', async () => {
-      selectedDate = d; selectedSlot = null;
-      document.getElementById('data').value = fmtKey(d);
-      document.getElementById('hora').value = '';
-      renderCalendar();
-      const barbeiro = document.getElementById('barbeiro').value;
-      await loadOccupied(fmtKey(d), barbeiro);
-      renderSlots(d);
-    });
+  selectedDate = d; selectedSlot = null;
+  document.getElementById('data').value = fmtKey(d);
+  document.getElementById('hora').value = '';
+  renderCalendar();
+  const barbeiro = document.getElementById('barbeiro').value;
+  try {
+    await loadOccupied(fmtKey(d), barbeiro);
+  } catch (err) {
+    console.error('Erro ao carregar horários ocupados:', err);
+    occupiedSlots = []; // continua com lista vazia
+  }
+  renderSlots(d);
+});
     gridEl.appendChild(btn);
   }
   const prevBtn = document.getElementById('calPrev');
