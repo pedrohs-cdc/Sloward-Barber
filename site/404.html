@@ -1,328 +1,130 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>404 — Página não encontrada · Sloward Barbershop</title>
-<meta name="description" content="Página não encontrada na Sloward Barbershop.">
-<meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
-<style>
-  body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow-x: hidden;
-  }
-  main.not-found {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: calc(var(--nav-h) + 64px) 32px 64px;
-    position: relative;
-  }
-
-  /* Floating decoration blob */
-  .not-found::before {
-    content: "";
-    position: absolute;
-    width: 900px; height: 900px;
-    background: radial-gradient(circle, rgba(37,99,235,0.18), transparent 60%);
-    filter: blur(40px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .nf-inner {
-    text-align: center;
-    max-width: 720px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .nf-glitch {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(140px, 22vw, 280px);
-    line-height: 0.9;
-    letter-spacing: -0.06em;
-    margin: 0;
-    position: relative;
-    display: inline-block;
-    color: var(--ink);
-    background: linear-gradient(135deg, var(--blue-bright) 0%, var(--blue-glow) 50%, var(--blue) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .nf-glitch::before,
-  .nf-glitch::after {
-    content: "404";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(135deg, var(--blue-bright) 0%, var(--blue-glow) 50%, var(--blue) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    pointer-events: none;
-  }
-  .nf-glitch::before {
-    animation: glitchA 2.8s infinite linear;
-    color: #ff00ff;
-    -webkit-text-fill-color: transparent;
-    opacity: 0.35;
-    mix-blend-mode: screen;
-  }
-  .nf-glitch::after {
-    animation: glitchB 3.2s infinite linear;
-    color: #00ffff;
-    opacity: 0.35;
-    mix-blend-mode: screen;
-  }
-  @keyframes glitchA {
-    0%, 100% { transform: translate(0,0); }
-    20% { transform: translate(-2px, 1px); }
-    40% { transform: translate(2px, -1px); }
-    60% { transform: translate(-1px, 2px); }
-    80% { transform: translate(1px, -2px); }
-  }
-  @keyframes glitchB {
-    0%, 100% { transform: translate(0,0); }
-    25% { transform: translate(2px, -1px); }
-    50% { transform: translate(-2px, 1px); }
-    75% { transform: translate(1px, 2px); }
-  }
-
-  .nf-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
-    padding: 8px 16px;
-    background: rgba(239, 68, 68, 0.08);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: 100px;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: #f87171;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .nf-status .blink {
-    width: 8px; height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-    animation: blinkDot 1.4s ease-in-out infinite;
-    box-shadow: 0 0 10px #ef4444;
-  }
-  @keyframes blinkDot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .nf-title {
-    font-family: var(--display);
-    font-size: clamp(28px, 4vw, 44px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    margin: 32px 0 16px;
-    color: var(--ink);
-  }
-  .nf-title .accent {
-    background: linear-gradient(135deg, var(--blue-bright), var(--blue-glow));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-style: italic;
-  }
-  .nf-desc {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--ink-mute);
-    margin: 0 auto 40px;
-    max-width: 480px;
-  }
-
-  .nf-ctas {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .nf-suggestions {
-    margin-top: 64px;
-    padding-top: 40px;
-    border-top: 1px solid var(--stroke-soft);
-  }
-  .nf-suggestions__label {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--ink-mute);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .nf-suggestions__label::before { content: "// "; color: var(--blue-bright); opacity: 0.6; }
-  .nf-suggestions__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-  }
-  .nf-suggestions a {
-    padding: 14px 18px;
-    background: var(--bg-2);
-    border: 1px solid var(--stroke-soft);
-    border-radius: 10px;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--ink-soft);
-    transition: all 240ms var(--ease-out);
-  }
-  .nf-suggestions a:hover {
-    border-color: var(--stroke-hot);
-    background: rgba(59,130,246,0.08);
-    color: var(--blue-bright);
-    transform: translateY(-3px);
-  }
-  .nf-suggestions a::before { content: "→ "; opacity: 0.5; }
-
-  /* Console-style code box */
-  .nf-trace {
-    margin-top: 48px;
-    background: var(--bg-2);
-    border: 1px solid var(--stroke-soft);
-    border-radius: 12px;
-    padding: 20px 24px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--ink-mute);
-    text-align: left;
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-  }
-  .nf-trace .err { color: #f87171; }
-  .nf-trace .ok { color: var(--blue-bright); }
-  .nf-trace .dim { color: var(--ink-faint); }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 — Sloward Barbershop</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231A1F26'/%3E%3Crect x='11' y='11' width='10' height='10' rx='2' fill='%233B82F6'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .notfound {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .notfound__inner {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      padding: 40px 24px;
+    }
+    .notfound__num {
+      font-family: var(--display);
+      font-size: clamp(120px, 20vw, 200px);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      background: linear-gradient(180deg, var(--blue-bright), var(--blue-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+    .notfound__code {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--blue-bright);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .notfound__title {
+      font-family: var(--display);
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 16px 0 20px;
+    }
+    .notfound__desc {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-mute);
+      margin: 0 0 40px;
+    }
+    .notfound__btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .notfound__bg-num {
+      position: absolute;
+      font-family: var(--display);
+      font-size: 40vw;
+      font-weight: 700;
+      color: rgba(59,130,246,0.03);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      letter-spacing: -0.1em;
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
-
-<div class="scroll-progress"></div>
-
-<nav class="nav">
-  <div class="container">
-    <a href="index.html" class="nav__brand"><span class="dot"></span>SLOWARD</a>
-    <div class="nav__menu">
-      <a href="index.html">inicio</a>
-      <a href="servicos.html">servicos</a>
-      <a href="equipe.html">equipe</a>
-      <a href="galeria.html">galeria</a>
-      <a href="localizacao.html">local</a>
-      <a href="blog.html">blog</a>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px;">
-      <button class="search-trigger" data-search-open aria-label="Buscar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span>buscar serviços...</span>
-        <span class="kbd"><span>⌘</span><span>K</span></span>
-      </button>
-      <button class="icon-btn" data-theme-toggle aria-label="Alternar tema">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </button>
-      <a href="login.html" class="icon-btn" aria-label="Entrar" title="Entrar / Cadastro">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      </a>
-      <a href="agendar.html" class="nav__cta">agendar <span class="arrow">→</span></a>
-      <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-  <div class="nav__mobile">
-    <a href="index.html">inicio</a>
-    <a href="servicos.html">servicos</a>
-    <a href="equipe.html">equipe</a>
-    <a href="galeria.html">galeria</a>
-    <a href="localizacao.html">local</a>
-    <a href="blog.html">blog</a>
-    <a href="login.html">entrar / cadastro</a>
-    <a href="agendar.html">agendar →</a>
-  </div>
-</nav>
-
-<main class="not-found">
-  <div class="bg-grid" style="opacity:0.4;"></div>
-  <div class="nf-inner">
-
-    <h1 class="nf-glitch" aria-label="404">404</h1>
-
-    <div class="nf-status">
-      <span class="blink"></span>
-      ERR_PAGE_NOT_FOUND
-    </div>
-
-    <h2 class="nf-title">
-      essa página foi <span class="accent">cortada.</span>
-    </h2>
-    <p class="nf-desc">
-      a gente fez um degradê tão bom que sumiu de vez. mas tudo bem — escolhe um destino abaixo e seguimos no flow.
-    </p>
-
-    <div class="nf-ctas">
-      <a href="index.html" class="btn btn--primary">voltar pra home <span class="arrow">→</span></a>
-      <a href="agendar.html" class="btn btn--outline">agendar visita</a>
-    </div>
-
-    <div class="nf-suggestions">
-      <div class="nf-suggestions__label">talvez você procurava</div>
-      <div class="nf-suggestions__grid">
-        <a href="servicos.html">serviços</a>
-        <a href="equipe.html">equipe</a>
-        <a href="galeria.html">galeria</a>
-        <a href="localizacao.html">localização</a>
-        <a href="blog.html">blog</a>
-        <a href="agendar.html">agendar</a>
+  <div class="scroll-progress"></div>
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav__brand"><span class="dot"></span>SLOWARD</a>
+      <div class="nav__menu">
+        <a href="/">inicio</a>
+        <a href="/servicos">servicos</a>
+        <a href="/equipe">equipe</a>
+        <a href="/galeria">galeria</a>
+        <a href="/localizacao">local</a>
+        <a href="/blog">blog</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="/agendar" class="nav__cta">agendar <span class="arrow">→</span></a>
+        <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </div>
-
-    <pre class="nf-trace"><span class="dim">$</span> <span class="ok">sloward</span> --route <span class="err">"<span id="badPath">página inexistente</span>"</span>
-<span class="err">✗ Error</span>: route not found in registry
-<span class="dim">  at Router.resolve (sloward://core)</span>
-<span class="dim">  at Page.render (sloward://app)</span>
-<span class="ok">✓ Tip</span>: tente <span class="ok">⌘ K</span> pra abrir a busca</pre>
-
-  </div>
-</main>
-
-<!-- ─── SEARCH DIALOG ─── -->
-<div class="search-backdrop" role="dialog" aria-modal="true" aria-label="Busca">
-  <div class="search-dialog">
-    <div class="search-input-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="buscar serviços, equipe, páginas..." autocomplete="off" />
-      <span class="esc" data-search-close>ESC</span>
+    <div class="nav__mobile">
+      <a href="/">inicio</a>
+      <a href="/servicos">servicos</a>
+      <a href="/equipe">equipe</a>
+      <a href="/galeria">galeria</a>
+      <a href="/localizacao">local</a>
+      <a href="/blog">blog</a>
+      <a href="/agendar">agendar →</a>
     </div>
-    <div class="search-results"></div>
+  </nav>
+
+  <div class="notfound">
+    <div class="bg-grid"></div>
+    <div class="notfound__bg-num">404</div>
+    <div class="bg-glow" style="left:50%; top:50%; transform:translate(-50%,-50%);" data-parallax="0"></div>
+    <div class="notfound__inner">
+      <div class="notfound__code">// erro 404</div>
+      <div class="notfound__num">404</div>
+      <h1 class="notfound__title">página não encontrada.</h1>
+      <p class="notfound__desc">Essa URL não existe — mas seu próximo corte existe. Que tal agendar?</p>
+      <div class="notfound__btns">
+        <a href="/" class="btn btn--primary">voltar ao início <span class="arrow">→</span></a>
+        <a href="/agendar" class="btn btn--outline">agendar horário</a>
+      </div>
+    </div>
   </div>
-</div>
 
-<a href="https://wa.me/5516920000060" class="fab-whats" target="_blank" rel="noopener" aria-label="WhatsApp">
-  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l.241.392-1.001 3.656 3.749-.982z"/></svg>
-</a>
-
-<script src="assets/motion.js"></script>
-<script>
-  // Show the path the user tried to access
-  const path = location.pathname.split('/').pop() || location.pathname;
-  if (path && path !== '404.html') {
-    document.getElementById('badPath').textContent = path;
-  }
-</script>
+  <script src="assets/motion.js"></script>
 </body>
 </html>
