@@ -126,8 +126,8 @@
       <h2 class="h2">faça login pra agendar</h2>
       <p class="lead" style="margin-top:16px; max-width:480px; margin-left:auto; margin-right:auto;">Você precisa estar logado pra garantir seu horário.</p>
       <div style="display:flex; gap:12px; justify-content:center; margin-top:32px; flex-wrap:wrap;">
-        <a href="login.html?next=agendar.html" class="btn btn--primary">entrar <span class="arrow">→</span></a>
-        <a href="login.html?next=agendar.html#signup" class="btn btn--outline">criar conta</a>
+        <a href="/login?next=agendar" class="btn btn--primary">entrar <span class="arrow">→</span></a>
+        <a href="/login?next=agendar#signup" class="btn btn--outline">criar conta</a>
       </div>
     </div>
 
@@ -194,7 +194,7 @@
           confirmar agendamento
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
         </button>
-        <div class="form-note">agendamento salvo no sistema · você receberá confirmação</div>
+        <div class="form-note">agendamento salvo no sistema · você receberá confirmação por e-mail</div>
       </form>
     </div>
 
@@ -205,8 +205,10 @@
       </div>
       <h2 class="h2">agendamento confirmado!</h2>
       <p class="lead" style="margin-top:16px;" id="success-msg"></p>
+      <p style="margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--ink-mute);">// confirmação enviada para o seu e-mail</p>
       <div style="display:flex; gap:12px; justify-content:center; margin-top:32px; flex-wrap:wrap;">
-        <a href="/" class="btn btn--primary">voltar ao início <span class="arrow">→</span></a>
+        <a href="/conta" class="btn btn--primary">ver meus agendamentos <span class="arrow">→</span></a>
+        <a href="/" class="btn btn--outline">voltar ao início</a>
       </div>
     </div>
 
@@ -251,6 +253,7 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="assets/motion.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -268,6 +271,8 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+emailjs.init('7uoxNg5XV2E7r8Sqr');
+
 let currentUser = null;
 const MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const HOURS_WEEKDAY = ['09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
@@ -277,7 +282,6 @@ let selectedDate = null;
 let selectedSlot = null;
 let occupiedSlots = [];
 
-// Auth check
 onAuthStateChanged(auth, async user => {
   if (user) {
     currentUser = user;
@@ -293,7 +297,6 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-// Load services from Firestore
 async function loadServices() {
   const snap = await getDocs(collection(db, 'servicos'));
   const select = document.getElementById('servico');
@@ -309,7 +312,6 @@ async function loadServices() {
   });
 }
 
-// Load occupied slots for selected date+barbeiro
 async function loadOccupied(date, barbeiro) {
   occupiedSlots = [];
   if (!date || !barbeiro) return;
@@ -323,7 +325,6 @@ async function loadOccupied(date, barbeiro) {
   snap.forEach(d => occupiedSlots.push(d.data().hora));
 }
 
-// Calendar
 const today = new Date(); today.setHours(0,0,0,0);
 const max = new Date(today); max.setMonth(max.getMonth() + 2);
 let viewYear = today.getFullYear();
@@ -357,19 +358,19 @@ function renderCalendar() {
     if (d.getTime() === today.getTime()) btn.classList.add('today');
     if (selectedDate && d.getTime() === selectedDate.getTime()) btn.classList.add('selected');
     btn.addEventListener('click', async () => {
-  selectedDate = d; selectedSlot = null;
-  document.getElementById('data').value = fmtKey(d);
-  document.getElementById('hora').value = '';
-  renderCalendar();
-  const barbeiro = document.getElementById('barbeiro').value;
-  try {
-    await loadOccupied(fmtKey(d), barbeiro);
-  } catch (err) {
-    console.error('Erro ao carregar horários ocupados:', err);
-    occupiedSlots = []; // continua com lista vazia
-  }
-  renderSlots(d);
-});
+      selectedDate = d; selectedSlot = null;
+      document.getElementById('data').value = fmtKey(d);
+      document.getElementById('hora').value = '';
+      renderCalendar();
+      const barbeiro = document.getElementById('barbeiro').value;
+      try {
+        await loadOccupied(fmtKey(d), barbeiro);
+      } catch (err) {
+        console.error('Erro ao carregar horários:', err);
+        occupiedSlots = [];
+      }
+      renderSlots(d);
+    });
     gridEl.appendChild(btn);
   }
   const prevBtn = document.getElementById('calPrev');
@@ -400,10 +401,13 @@ function renderSlots(d) {
   });
 }
 
-// Re-load slots when barbeiro changes
 document.getElementById('barbeiro').addEventListener('change', async () => {
   if (selectedDate) {
-    await loadOccupied(fmtKey(selectedDate), document.getElementById('barbeiro').value);
+    try {
+      await loadOccupied(fmtKey(selectedDate), document.getElementById('barbeiro').value);
+    } catch(err) {
+      occupiedSlots = [];
+    }
     renderSlots(selectedDate);
   }
 });
@@ -415,7 +419,6 @@ document.getElementById('calNext').addEventListener('click', () => {
   viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar();
 });
 
-// Submit
 document.getElementById('bookForm').addEventListener('submit', async e => {
   e.preventDefault();
   const servico = document.getElementById('servico');
@@ -445,11 +448,25 @@ document.getElementById('bookForm').addEventListener('submit', async e => {
       criadoEm: new Date().toISOString()
     });
 
+    // Envia e-mail de confirmação
+    const [y, m, d] = data.split('-');
+    try {
+      await emailjs.send('service_jg9nn2w', '43pbia4', {
+        cliente_nome: currentUser.displayName || currentUser.email.split('@')[0],
+        cliente_email: currentUser.email,
+        servico: servico.options[servico.selectedIndex].text.split('—')[0].trim(),
+        barbeiro: barbeiro === 'pedro' ? 'Pedro Sigismundo' : 'André Patric',
+        data: `${d}/${m}/${y}`,
+        hora: hora,
+      });
+    } catch(emailErr) {
+      console.warn('E-mail não enviado:', emailErr);
+    }
+
     // Mostra sucesso
     document.getElementById('form-wrap').style.display = 'none';
     const wrap = document.getElementById('success-wrap');
     wrap.style.display = 'block';
-    const [y, m, d] = data.split('-');
     document.getElementById('success-msg').textContent =
       `${servico.options[servico.selectedIndex].text.split('—')[0].trim()} com ${barbeiro === 'pedro' ? 'Pedro' : 'André'} no dia ${d}/${m}/${y} às ${hora}.`;
   } catch(err) {
