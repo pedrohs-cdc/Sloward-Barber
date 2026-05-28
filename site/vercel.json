@@ -9,6 +9,10 @@
     { "source": "/galeria", "destination": "/galeria.html" },
     { "source": "/agendar", "destination": "/agendar.html" },
     { "source": "/localizacao", "destination": "/localizacao.html" },
-    { "source": "/blog", "destination": "/blog.html" }
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/blog-corte-rosto", "destination": "/blog-corte-rosto.html" },
+    { "source": "/blog-navalha", "destination": "/blog-navalha.html" },
+    { "source": "/blog-degrade", "destination": "/blog-degrade.html" },
+    { "source": "/blog-rotina-capilar", "destination": "/blog-rotina-capilar.html" }
   ]
 }
