@@ -32,7 +32,6 @@
     .toggle-btn.on::after { transform: translateX(24px); }
     .edit-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--stroke-hot); background: transparent; color: var(--ink); font-family: var(--mono); font-size: 13px; cursor: pointer; transition: all 220ms; }
     .edit-btn:hover { background: rgba(59,130,246,0.1); color: var(--blue-bright); }
-    /* Agendamentos */
     .agenda-controls { display: flex; gap: 16px; align-items: center; margin-bottom: 32px; flex-wrap: wrap; }
     .agenda-date { font-family: var(--mono); font-size: 14px; background: var(--bg-2); border: 1px solid var(--stroke-soft); border-radius: 8px; padding: 10px 16px; color: var(--ink); cursor: pointer; }
     .barbeiro-filter { display: flex; gap: 8px; }
@@ -58,7 +57,6 @@
     .status-badge.cancelado { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.3); }
     .empty-state { text-align: center; padding: 80px 40px; color: var(--ink-mute); font-family: var(--mono); font-size: 14px; }
     @media (max-width: 740px) { .agenda-card { grid-template-columns: 60px 1fr; } .agenda-servico, .agenda-actions { grid-column: 2; } }
-    /* Modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--bg-2); border: 1px solid var(--stroke-hot); border-radius: 20px; padding: 40px; width: min(560px, 92vw); display: flex; flex-direction: column; gap: 20px; }
@@ -95,7 +93,7 @@
         <h1>Painel <span style="color:var(--blue-bright);">Admin</span></h1>
         <p style="color:var(--ink-mute);margin-top:8px;">Entre com suas credenciais de barbeiro.</p>
       </div>
-      <div class="field"><label>E-mail</label><input type="email" id="email" placeholder="pedro@sloward.com.br" /></div>
+      <div class="field"><label>E-mail</label><input type="email" id="email" placeholder="email" /></div>
       <div class="field"><label>Senha</label><input type="password" id="password" placeholder="••••••••" /></div>
       <p class="login-error" id="login-error">E-mail ou senha incorretos.</p>
       <button class="btn btn--primary" onclick="login()" style="width:100%;justify-content:center;">entrar <span class="arrow">→</span></button>
@@ -109,14 +107,10 @@
         <div class="eyebrow">// painel de controle</div>
         <h1 class="h1" style="margin-top:16px;">Sloward <span style="color:var(--blue-bright);">Admin</span></h1>
       </div>
-
-      <!-- Tabs -->
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchTab('servicos')">// serviços</button>
         <button class="admin-tab" onclick="switchTab('agendamentos')">// agendamentos</button>
       </div>
-
-      <!-- Tab Serviços -->
       <div class="tab-panel active" id="tab-servicos">
         <div style="margin-bottom:32px;">
           <h2 class="h2">Gerenciar <span style="color:var(--blue-bright);">Serviços</span></h2>
@@ -126,8 +120,6 @@
           <div style="color:var(--ink-mute);font-family:var(--mono);">Carregando serviços...</div>
         </div>
       </div>
-
-      <!-- Tab Agendamentos -->
       <div class="tab-panel" id="tab-agendamentos">
         <div style="margin-bottom:32px;">
           <h2 class="h2">Agenda <span style="color:var(--blue-bright);">do Dia</span></h2>
@@ -173,7 +165,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const app = initializeApp({
       apiKey: "AIzaSyCX6dMDVlO9sXKGiD3tAYckwRVPnw7N2is",
@@ -188,16 +180,27 @@
 
     let currentBarbeiro = 'todos';
 
+    // ─── Lista de e-mails autorizados ───
+    const ADMINS = [
+      'pedrosigismundo.unifran@gmail.com',
+      'andre@sloward.com.br'
+    ];
+
     onAuthStateChanged(auth, user => {
-      if (user) {
+      if (user && ADMINS.includes(user.email)) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-screen').style.display = 'block';
         document.getElementById('user-email').textContent = user.email;
         loadServices();
-        // Set today's date
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('agenda-date').value = today;
         loadAgendamentos(today);
+      } else if (user && !ADMINS.includes(user.email)) {
+        signOut(auth);
+        document.getElementById('login-error').textContent = 'Acesso não autorizado.';
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('admin-screen').style.display = 'none';
       } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('admin-screen').style.display = 'none';
@@ -207,12 +210,18 @@
     window.login = async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      try { await signInWithEmailAndPassword(auth, email, password); }
-      catch(e) { document.getElementById('login-error').style.display = 'block'; }
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch(e) {
+        errEl.textContent = 'E-mail ou senha incorretos.';
+        errEl.style.display = 'block';
+      }
     };
+
     window.logout = () => signOut(auth);
 
-    // Tab switching
     window.switchTab = (tab) => {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
@@ -220,7 +229,6 @@
       event.target.classList.add('active');
     };
 
-    // Barbeiro filter
     window.setBarbeiro = (b) => {
       currentBarbeiro = b;
       document.querySelectorAll('.barbeiro-btn').forEach(btn => btn.classList.remove('active'));
@@ -229,12 +237,10 @@
       if (date) loadAgendamentos(date);
     };
 
-    // Date change
     document.getElementById('agenda-date').addEventListener('change', e => {
       loadAgendamentos(e.target.value);
     });
 
-    // Load services
     async function loadServices() {
       try {
         const snap = await getDocs(collection(db, 'servicos'));
@@ -276,6 +282,7 @@
       document.getElementById('edit-descricao').value = descricao;
       document.getElementById('modal').classList.add('open');
     };
+
     window.closeModal = () => document.getElementById('modal').classList.remove('open');
 
     window.saveService = async () => {
@@ -289,36 +296,27 @@
       closeModal(); showToast('Serviço atualizado!'); loadServices();
     };
 
-    // Load agendamentos
     async function loadAgendamentos(date) {
       const list = document.getElementById('agenda-list');
       list.innerHTML = '<div class="empty-state">carregando...</div>';
       try {
-        let q = query(collection(db, 'agendamentos'), where('data', '==', date));
+        const q = query(collection(db, 'agendamentos'), where('data', '==', date));
         const snap = await getDocs(q);
         let docs = [];
         snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
-
-        // Filter by barbeiro
         if (currentBarbeiro !== 'todos') {
           docs = docs.filter(d => d.barbeiro === currentBarbeiro);
         }
-
-        // Sort by hora
         docs.sort((a, b) => a.hora.localeCompare(b.hora));
-
-        // Stats
         const confirmados = docs.filter(d => d.status !== 'cancelado').length;
         const cancelados = docs.filter(d => d.status === 'cancelado').length;
         document.getElementById('stat-total').textContent = docs.length;
         document.getElementById('stat-confirmados').textContent = confirmados;
         document.getElementById('stat-cancelados').textContent = cancelados;
-
         if (!docs.length) {
           list.innerHTML = '<div class="empty-state">nenhum agendamento para esta data</div>';
           return;
         }
-
         list.innerHTML = '';
         docs.forEach(a => {
           const card = document.createElement('div');
@@ -352,8 +350,7 @@
       if (!confirm('Cancelar este agendamento?')) return;
       await updateDoc(doc(db, 'agendamentos', id), { status: 'cancelado' });
       showToast('Agendamento cancelado');
-      const date = document.getElementById('agenda-date').value;
-      loadAgendamentos(date);
+      loadAgendamentos(document.getElementById('agenda-date').value);
     };
 
     function showToast(msg) {
