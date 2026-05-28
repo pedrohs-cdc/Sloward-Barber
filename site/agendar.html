@@ -271,7 +271,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-emailjs.init('7uoxNg5XV2E7r8Sqr');
+window.emailjs.init('7uoxNg5XV2E7r8Sqr');
 
 let currentUser = null;
 const MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -451,7 +451,7 @@ document.getElementById('bookForm').addEventListener('submit', async e => {
     // Envia e-mail de confirmação
     const [y, m, d] = data.split('-');
     try {
-      await emailjs.send('service_jg9nn2w', '43pbia4', {
+      await window.emailjs.send('service_jg9nn2w', '43pbia4', {
         cliente_nome: currentUser.displayName || currentUser.email.split('@')[0],
         cliente_email: currentUser.email,
         servico: servico.options[servico.selectedIndex].text.split('—')[0].trim(),
